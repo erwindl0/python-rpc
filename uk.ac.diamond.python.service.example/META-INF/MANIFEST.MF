@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Python RPC Example
+Bundle-SymbolicName: uk.ac.diamond.python.service.example
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: iSencia
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: org.eclipse.osgi.framework.console,
+ uk.ac.diamond.python.service;version="1.0.2"
+Service-Component: OSGI-INF/component.xml

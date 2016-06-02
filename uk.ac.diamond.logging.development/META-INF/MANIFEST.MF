@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Development Fragment
+Bundle-SymbolicName: uk.ac.diamond.logging.development
+Bundle-Version: 3.0.0.qualifier
+Fragment-Host: org.apache.log4j
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.pde.ui.EquinoxLauncher">
+<booleanAttribute key="append.args" value="true"/>
+<booleanAttribute key="automaticAdd" value="true"/>
+<booleanAttribute key="automaticValidate" value="false"/>
+<stringAttribute key="bootstrap" value=""/>
+<stringAttribute key="checked" value="[NONE]"/>
+<booleanAttribute key="clearConfig" value="false"/>
+<stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/OSGi Framework"/>
+<booleanAttribute key="default" value="true"/>
+<booleanAttribute key="default_auto_start" value="true"/>
+<intAttribute key="default_start_level" value="4"/>
+<booleanAttribute key="includeOptional" value="true"/>
+<stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -console"/>
+<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Declipse.ignoreApp=true -Dosgi.noShutdown=true &#13;&#10;-Dorg.foobar.python.scripts.system=C:\data\build-folders\python-rpc\uk.ac.diamond.python.service\scripts&#13;&#10;-Dorg.foobar.python.scripts.user=C:\data\build-folders\python-rpc/uk.ac.diamond.python.service.example/scripts"/>
+<booleanAttribute key="pde.generated.config" value="true"/>
+<stringAttribute key="pde.version" value="3.3"/>
+<booleanAttribute key="show_selected_only" value="false"/>
+<stringAttribute key="target_bundles" value="com.ibm.icu@default:default,com.sun.packages@default:false,org.apache.commons.codec@default:default,org.apache.commons.collections@default:default,org.apache.commons.httpclient@default:default,org.apache.commons.lang@default:default,org.apache.commons.logging@default:default,org.apache.felix.gogo.command@default:default,org.apache.felix.gogo.runtime@default:default,org.apache.felix.gogo.shell@default:default,org.apache.httpcomponents.httpclient@default:default,org.apache.httpcomponents.httpcore@default:default,org.apache.log4j@default:default,org.eclipse.core.contenttype@default:default,org.eclipse.core.jobs@default:default,org.eclipse.core.runtime@default:true,org.eclipse.equinox.app@default:default,org.eclipse.equinox.common@2:true,org.eclipse.equinox.console@default:default,org.eclipse.equinox.ds@1:true,org.eclipse.equinox.preferences@default:default,org.eclipse.equinox.registry@default:default,org.eclipse.equinox.util@default:default,org.eclipse.osgi.services@default:default,org.eclipse.osgi@-1:true,org.junit@default:default,slf4j.api@default:default,slf4j.log4j12@default:false,uk.ac.diamond.org.apache.ws.commons.util@default:default,uk.ac.diamond.org.apache.xmlrpc.client@default:default,uk.ac.diamond.org.apache.xmlrpc.common@default:default"/>
+<booleanAttribute key="tracing" value="false"/>
+<booleanAttribute key="useCustomFeatures" value="false"/>
+<booleanAttribute key="useDefaultConfigArea" value="true"/>
+<stringAttribute key="workspace_bundles" value="uk.ac.diamond.logging.development@default:false,uk.ac.diamond.python.service.example@default:default,uk.ac.diamond.python.service@default:default,uk.ac.diamond.scisoft.analysis.rpc@default:default"/>
+</launchConfiguration>
