@@ -41,7 +41,7 @@ def _get_gateway():
 
 def _mk_line_roi(roi):
     j = _get_gateway().jvm
-    l = j.uk.ac.diamond.scisoft.analysis.roi.LinearROI()
+    l = j.org.eclipse.triquetrum.scisoft.analysis.roi.LinearROI()
     l.setPoint(roi.point[0], roi.point[1])
     l.setLength(roi.length)
     l.setAngleDegrees(roi.angledegrees)
@@ -49,7 +49,7 @@ def _mk_line_roi(roi):
 
 def _mk_rect_roi(roi):
     j = _get_gateway().jvm
-    r = j.uk.ac.diamond.scisoft.analysis.roi.RectangularROI()
+    r = j.org.eclipse.triquetrum.scisoft.analysis.roi.RectangularROI()
     r.setPoint(roi.point[0], roi.point[1])
     r.setLengths(roi.lengths[0], roi.lengths[1])
     r.setAngleDegrees(roi.angledegrees)
@@ -57,7 +57,7 @@ def _mk_rect_roi(roi):
 
 def _mk_sect_roi(roi):
     j = _get_gateway().jvm
-    s = j.uk.ac.diamond.scisoft.analysis.roi.SectorROI()
+    s = j.org.eclipse.triquetrum.scisoft.analysis.roi.SectorROI()
     s.setPoint(roi.point[0], roi.point[1])
     s.setRadii(roi.radii[0], roi.radii[1])
     s.setAnglesDegrees(roi.anglesdegrees[0], roi.anglesdegrees[1])
@@ -85,8 +85,8 @@ def _jsave_datasets(datasets, dir=None):  # @ReservedAssignment
     p = _tmp.mkdtemp(prefix='py4j-jargs', dir=dir)
     n = 0
     j = _get_gateway().jvm
-    dh = j.uk.ac.diamond.scisoft.analysis.io.DataHolder()
-    svr = j.uk.ac.diamond.scisoft.analysis.io.NumPyFileSaver
+    dh = j.org.eclipse.triquetrum.scisoft.analysis.io.DataHolder()
+    svr = j.org.eclipse.triquetrum.scisoft.analysis.io.NumPyFileSaver
     names = []
     for d in datasets:
         if d is None:
@@ -112,7 +112,7 @@ def _pyload_arrays(names):
 
 def _jload_datasets(names):
     datasets = []
-    ldr = _get_gateway().jvm.uk.ac.diamond.scisoft.analysis.io.NumPyFileLoader
+    ldr = _get_gateway().jvm.org.eclipse.triquetrum.scisoft.analysis.io.NumPyFileLoader
     for n in names:
         try:
             datasets.append(ldr(n).loadFile().getDataset(0))
@@ -126,7 +126,7 @@ def profile(data, roi, step=None, mask=None):
     mask is used when clipping compensation is set true (for rectangular and sector ROI)
     '''
     j = _get_gateway().jvm
-    profile = j.uk.ac.diamond.scisoft.analysis.roi.ROIProfile
+    profile = j.org.eclipse.triquetrum.scisoft.analysis.roi.ROIProfile
     if isinstance(roi, line):
         roi  = _mk_line_roi(roi)
         if step is None:

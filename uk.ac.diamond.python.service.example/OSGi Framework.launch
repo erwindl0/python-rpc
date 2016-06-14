@@ -14,7 +14,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -console"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Declipse.ignoreApp=true -Dosgi.noShutdown=true &#13;&#10;-Dorg.foobar.python.scripts.system=C:\data\build-folders\python-rpc\uk.ac.diamond.python.service\scripts&#13;&#10;-Dorg.foobar.python.scripts.user=C:\data\build-folders\python-rpc/uk.ac.diamond.python.service.example/scripts"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Declipse.ignoreApp=true -Dosgi.noShutdown=true &#13;&#10;-Dorg.foobar.python.scripts.system=C:\data\build-folders\python-rpc\org.eclipse.triquetrum.python.service\scripts&#13;&#10;-Dorg.foobar.python.scripts.user=C:\data\build-folders\python-rpc/org.eclipse.triquetrum.python.service.example/scripts"/>
 <booleanAttribute key="pde.generated.config" value="true"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <booleanAttribute key="show_selected_only" value="false"/>
@@ -22,5 +22,5 @@
 <booleanAttribute key="tracing" value="false"/>
 <booleanAttribute key="useCustomFeatures" value="false"/>
 <booleanAttribute key="useDefaultConfigArea" value="true"/>
-<stringAttribute key="workspace_bundles" value="uk.ac.diamond.logging.development@default:false,uk.ac.diamond.python.service.example@default:default,uk.ac.diamond.python.service@default:default,uk.ac.diamond.scisoft.analysis.rpc@default:default"/>
+<stringAttribute key="workspace_bundles" value="org.eclipse.triquetrum.logging.development@default:false,org.eclipse.triquetrum.python.service.example@default:default,org.eclipse.triquetrum.python.service@default:default,org.eclipse.triquetrum.scisoft.analysis.rpc@default:default"/>
 </launchConfiguration>

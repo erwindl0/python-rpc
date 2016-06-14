@@ -1,13 +1,13 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: DLS Analysis RPC subset for passerelle
-Bundle-SymbolicName: uk.ac.diamond.scisoft.analysis.rpc
+Bundle-SymbolicName: org.eclipse.triquetrum.scisoft.analysis.rpc
 Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: uk.ac.diamond.scisoft.analysis.rpc,
- uk.ac.diamond.scisoft.analysis.rpc.flattening,
- uk.ac.diamond.scisoft.analysis.rpc.flattening.helpers,
- uk.ac.diamond.scisoft.analysis.rpc.internal
+Export-Package: org.eclipse.triquetrum.scisoft.analysis.rpc,
+ org.eclipse.triquetrum.scisoft.analysis.rpc.flattening,
+ org.eclipse.triquetrum.scisoft.analysis.rpc.flattening.helpers,
+ org.eclipse.triquetrum.scisoft.analysis.rpc.internal
 Import-Package: org.apache.commons.lang,
  org.apache.ws.commons.util;version="1.0.2",
  org.apache.xmlrpc;version="3.1.3",

@@ -1,60 +1,15 @@
-/* tifffile.c
-
-A Python C extension module for decoding PackBits and LZW encoded TIFF data.
-
-Refer to the tifffile.py module for documentation and tests.
-
-:Author:
-  `Christoph Gohlke <http://www.lfd.uci.edu/~gohlke/>`_
-
-:Organization:
-  Laboratory for Fluorescence Dynamics, University of California, Irvine
-
-:Version: 2013.01.18
-
-Install
--------
-Use this Python distutils setup script to build the extension module::
-
-  # setup.py
-  # Usage: ``python setup.py build_ext --inplace``
-  from distutils.core import setup, Extension
-  import numpy
-  setup(name='_tifffile',
-        ext_modules=[Extension('_tifffile', ['tifffile.c'],
-                               include_dirs=[numpy.get_include()])])
-
-License
--------
-Copyright (c) 2008-2013, Christoph Gohlke
-Copyright (c) 2008-2013, The Regents of the University of California
-Produced at the Laboratory for Fluorescence Dynamics
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright
-  notice, this list of conditions and the following disclaimer.
-* Redistributions in binary form must reproduce the above copyright
-  notice, this list of conditions and the following disclaimer in the
-  documentation and/or other materials provided with the distribution.
-* Neither the name of the copyright holders nor the names of any
-  contributors may be used to endorse or promote products derived
-  from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
-LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE.
-*/
+/*******************************************************************************
+ * Copyright (c) 2014, 2016  Diamond Light Source Ltd., 
+ *                          Kichwa Coders & iSencia Belgium NV.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    DLS, Kichwa Coders - initial API and implementation and/or initial documentation
+ *    Erwin De Ley - extraction from DAWN to ease reuse in other contexts
+ *******************************************************************************/
 
 #define _VERSION_ "2013.01.18"
 

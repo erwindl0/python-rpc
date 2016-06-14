@@ -86,36 +86,36 @@ class roiHelper(flatteningHelper):
 
     @staticmethod
     def getROIBaseHelper():
-        return roiHelper(_roi.roibase, "uk.ac.diamond.scisoft.analysis.roi.ROIBase")
+        return roiHelper(_roi.roibase, "org.eclipse.triquetrum.scisoft.analysis.roi.ROIBase")
         
     @staticmethod
     def getPointHelper():
-        return roiHelper(_roi.point, "uk.ac.diamond.scisoft.analysis.roi.PointROI")
+        return roiHelper(_roi.point, "org.eclipse.triquetrum.scisoft.analysis.roi.PointROI")
         
     @staticmethod
     def getRectangleHelper():
-        return roiHelper(_roi.rectangle, "uk.ac.diamond.scisoft.analysis.roi.RectangularROI")
+        return roiHelper(_roi.rectangle, "org.eclipse.triquetrum.scisoft.analysis.roi.RectangularROI")
         
     @staticmethod
     def getSectorHelper():
-        return roiHelper(_roi.sector, "uk.ac.diamond.scisoft.analysis.roi.SectorROI")
+        return roiHelper(_roi.sector, "org.eclipse.triquetrum.scisoft.analysis.roi.SectorROI")
 
     @staticmethod
     def getLineHelper():
-        return roiHelper(_roi.line, "uk.ac.diamond.scisoft.analysis.roi.LinearROI")
+        return roiHelper(_roi.line, "org.eclipse.triquetrum.scisoft.analysis.roi.LinearROI")
 
     @staticmethod
     def getCircleHelper():
-        return roiHelper(_roi.circle, "uk.ac.diamond.scisoft.analysis.roi.CircularROI")
+        return roiHelper(_roi.circle, "org.eclipse.triquetrum.scisoft.analysis.roi.CircularROI")
 
     @staticmethod
     def getEllipseHelper():
-        return roiHelper(_roi.ellipse, "uk.ac.diamond.scisoft.analysis.roi.EllipticalROI")
+        return roiHelper(_roi.ellipse, "org.eclipse.triquetrum.scisoft.analysis.roi.EllipticalROI")
 
 
 class axisMapBeanHelper(flatteningHelper):
 
-    TYPE_NAME = "uk.ac.diamond.scisoft.analysis.plotserver.AxisMapBean"
+    TYPE_NAME = "org.eclipse.triquetrum.scisoft.analysis.plotserver.AxisMapBean"
     
     def __init__(self):
         super(axisMapBeanHelper, self).__init__(_beans.axismapbean, self.TYPE_NAME)
@@ -135,7 +135,7 @@ class axisMapBeanHelper(flatteningHelper):
         
 class datasetWithAxisInformationHelper(flatteningHelper):
 
-    TYPE_NAME = "uk.ac.diamond.scisoft.analysis.plotserver.DataSetWithAxisInformation"
+    TYPE_NAME = "org.eclipse.triquetrum.scisoft.analysis.plotserver.DataSetWithAxisInformation"
     
     def __init__(self):
         super(datasetWithAxisInformationHelper, self).__init__(_beans.datasetwithaxisinformation, self.TYPE_NAME)
@@ -204,7 +204,7 @@ class unicodeHelper(object):
         return False
 
 class ndArrayHelper(flatteningHelper):
-    TYPE_NAME = "uk.ac.diamond.scisoft.analysis.dataset.AbstractDataset"
+    TYPE_NAME = "org.eclipse.triquetrum.scisoft.analysis.dataset.AbstractDataset"
     FILENAME = "filename"
     DELETEFILEAFTERLOAD = "deletefile"
     INDEX = "index"
@@ -262,7 +262,7 @@ class ndArrayHelper(flatteningHelper):
         return isinstance(obj, (_np.ndarray, _wrapper.abstractdatasetdescriptor))
 
 class guiBeanHelper(flatteningHelper):
-    TYPE_NAME = "uk.ac.diamond.scisoft.analysis.plotserver.GuiBean"
+    TYPE_NAME = "org.eclipse.triquetrum.scisoft.analysis.plotserver.GuiBean"
     
     def __init__(self):
         super(guiBeanHelper, self).__init__(_beans.guibean, self.TYPE_NAME)
@@ -290,7 +290,7 @@ class guiBeanHelper(flatteningHelper):
         return rval
 
 class guiParametersHelper(flatteningHelper):
-    TYPE_NAME = "uk.ac.diamond.scisoft.analysis.plotserver.GuiParameters"
+    TYPE_NAME = "org.eclipse.triquetrum.scisoft.analysis.plotserver.GuiParameters"
 
     def __init__(self):
         super(guiParametersHelper, self).__init__(_beans._parameters._parametershelper, self.TYPE_NAME)
@@ -305,7 +305,7 @@ class guiParametersHelper(flatteningHelper):
         return _beans.parameters.get(thisDict[CONTENT])
 
 class plotModeHelper(flatteningHelper):
-    TYPE_NAME = "uk.ac.diamond.scisoft.analysis.plotserver.GuiPlotMode"
+    TYPE_NAME = "org.eclipse.triquetrum.scisoft.analysis.plotserver.GuiPlotMode"
 
     def __init__(self):
         super(plotModeHelper, self).__init__(_beans._plotmode._plotmodehelper, self.TYPE_NAME)
@@ -341,27 +341,27 @@ class roiListHelper(flatteningHelper):
 
     @staticmethod
     def getPointListHelper():
-        return roiListHelper(_roi.point_list, "uk.ac.diamond.scisoft.analysis.roi.PointROIList")
+        return roiListHelper(_roi.point_list, "org.eclipse.triquetrum.scisoft.analysis.roi.PointROIList")
 
     @staticmethod
     def getLineListHelper():
-        return roiListHelper(_roi.line_list, "uk.ac.diamond.scisoft.analysis.roi.LinearROIList")
+        return roiListHelper(_roi.line_list, "org.eclipse.triquetrum.scisoft.analysis.roi.LinearROIList")
 
     @staticmethod
     def getRectangleListHelper():
-        return roiListHelper(_roi.rectangle_list, "uk.ac.diamond.scisoft.analysis.roi.RectangularROIList")
+        return roiListHelper(_roi.rectangle_list, "org.eclipse.triquetrum.scisoft.analysis.roi.RectangularROIList")
 
     @staticmethod
     def getSectorListHelper():
-        return roiListHelper(_roi.sector_list, "uk.ac.diamond.scisoft.analysis.roi.SectorROIList")
+        return roiListHelper(_roi.sector_list, "org.eclipse.triquetrum.scisoft.analysis.roi.SectorROIList")
 
     @staticmethod
     def getCircleListHelper():
-        return roiListHelper(_roi.circle_list, "uk.ac.diamond.scisoft.analysis.roi.CircularROIList")
+        return roiListHelper(_roi.circle_list, "org.eclipse.triquetrum.scisoft.analysis.roi.CircularROIList")
 
     @staticmethod
     def getEllipseListHelper():
-        return roiListHelper(_roi.ellipse_list, "uk.ac.diamond.scisoft.analysis.roi.EllipticalROIList")
+        return roiListHelper(_roi.ellipse_list, "org.eclipse.triquetrum.scisoft.analysis.roi.EllipticalROIList")
 
 class listAndTupleHelper(object):
     def flatten(self, obj):
@@ -384,7 +384,7 @@ class listAndTupleHelper(object):
         return isinstance(obj, (list, tuple))
 
 class dataBeanHelper(flatteningHelper):
-    TYPE_NAME = "uk.ac.diamond.scisoft.analysis.plotserver.DataBean"
+    TYPE_NAME = "org.eclipse.triquetrum.scisoft.analysis.plotserver.DataBean"
     
     def __init__(self):
         super(dataBeanHelper, self).__init__(_beans.databean, self.TYPE_NAME)
