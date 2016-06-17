@@ -25,8 +25,7 @@ import org.eclipse.triquetrum.scisoft.analysis.rpc.AnalysisRpcClient;
 import org.eclipse.triquetrum.scisoft.analysis.rpc.AnalysisRpcRemoteException;
 
 /**
- * This class encapsulates a system command to python used with the RPC service.
- * Minimized version of the org.dawnsci.python.rpc.PythonService.
+ * This class encapsulates a system command to python used with the RPC service. Minimized version of the org.dawnsci.python.rpc.PythonService.
  */
 public class PythonService {
 
@@ -182,8 +181,8 @@ public class PythonService {
       throw new Exception("The remote python process did not start!");
 
     int count = 0;
-    final int time = System.getProperty(PYTHON_RPC_SERVICE_TIMEOUT_PROP_NAME) != null ? Integer.parseInt(System
-        .getProperty(PYTHON_RPC_SERVICE_TIMEOUT_PROP_NAME)) : 5000;
+    final int time = System.getProperty(PYTHON_RPC_SERVICE_TIMEOUT_PROP_NAME) != null
+        ? Integer.parseInt(System.getProperty(PYTHON_RPC_SERVICE_TIMEOUT_PROP_NAME)) : 5000;
 
     while (count <= time) {
       try {

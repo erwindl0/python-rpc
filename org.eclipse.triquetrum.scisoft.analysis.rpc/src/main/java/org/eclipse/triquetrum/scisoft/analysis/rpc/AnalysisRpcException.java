@@ -14,26 +14,25 @@
 package org.eclipse.triquetrum.scisoft.analysis.rpc;
 
 /**
- * Wrapper exception for any one of a number of possible failures. Call
- * {@link #getCause()} for the underlying exception
+ * Wrapper exception for any one of a number of possible failures. Call {@link #getCause()} for the underlying exception
  */
 public class AnalysisRpcException extends Exception {
-	private static final long serialVersionUID = 8996421526351837418L;
+  private static final long serialVersionUID = 8996421526351837418L;
 
-	public AnalysisRpcException() {
-		super();
-	}
+  public AnalysisRpcException() {
+    super();
+  }
 
-	public AnalysisRpcException(String s) {
-		super(s);
-	}
+  public AnalysisRpcException(String s) {
+    super(s);
+  }
 
-	public AnalysisRpcException(String message, Throwable cause) {
-		super(message, cause);
-	}
+  public AnalysisRpcException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
-	public AnalysisRpcException(Throwable cause) {
-		super(cause);
-	}
+  public AnalysisRpcException(Throwable cause) {
+    super(cause);
+  }
 
 }

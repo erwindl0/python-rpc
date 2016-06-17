@@ -23,56 +23,53 @@ import org.eclipse.triquetrum.python.service.PythonService;
 
 /**
  *
- * Example to demonstrate the invocation of a python script,  with optional parameter specifications.
+ * Example to demonstrate the invocation of a python script, with optional parameter specifications.
  * <p>
- * To try this, run all org.eclipse.triquetrum... bundles in an Equinox + console and use the contributed
- * "runScript" command from the osgi console.
+ * To try this, run all org.eclipse.triquetrum... bundles in an Equinox + console and use the contributed "runScript" command from the osgi console.
  * </p>
  * <p>
- * Sample launcher is included to show the system property that must be used to point to the location
- * of the rpc "system" scripts, e.g. :<br/>
+ * Sample launcher is included to show the system property that must be used to point to the location of the rpc "system" scripts, e.g. :<br/>
  * <em>-Dorg.passerelle.python.scripts.system=${workspace_loc}/org.eclipse.triquetrum.python.service/scripts</em>
  * </p>
  *
  */
 public class TestRunner implements CommandProvider {
 
-	public String getHelp() {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("\n---Python RPC test---\n");
-		buffer.append("\trunScript <script filename> [param1=val1] [param2=val2] ...\n");
-		buffer.append("\t E.g. : ");
-		buffer.append("\t osgi> runScript helloworld input1=hi input2=ho\n");
-		buffer.append("\t the script filename should point to a file in the user scripts folder,\n");
-		buffer.append("\t whose location is identified by the system property org.foobar.python.scripts.user.\n");
-		return buffer.toString();
-	}
+  public String getHelp() {
+    StringBuffer buffer = new StringBuffer();
+    buffer.append("\n---Python RPC test---\n");
+    buffer.append("\trunScript <script filename> [param1=val1] [param2=val2] ...\n");
+    buffer.append("\t E.g. : ");
+    buffer.append("\t osgi> runScript helloworld input1=hi input2=ho\n");
+    buffer.append("\t the script filename should point to a file in the user scripts folder,\n");
+    buffer.append("\t whose location is identified by the system property org.foobar.python.scripts.user.\n");
+    return buffer.toString();
+  }
 
-	public void _runScript(CommandInterpreter ci) {
-		String script = ci.nextArgument();
-		script = System.getProperty("org.foobar.python.scripts.user",
-				"C:/data/workspaces/python-rpc/org.eclipse.triquetrum.python.service.example/scripts")
-				+ File.separator+ script;
-		if(!script.endsWith(".py")) {
-			script += ".py";
-		}
-		try {
-			PythonService service = PythonService.openConnection("python");
-			Map<String, Serializable> data = new HashMap<String, Serializable>();
-			String param = null;
-			while((param=ci.nextArgument())!=null) {
-				String[] parts = param.split("=");
-				if(parts.length==2) {
-					data.put(parts[0].trim(), parts[1].trim());
-				} else {
-					System.err.println("Invalid param=value format for "+param);
-					System.err.println(getHelp());
-				}
-			}
-			final Map<String, ? extends Object> result = service.runScript(script, data);
-			System.out.println(result);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+  public void _runScript(CommandInterpreter ci) {
+    String script = ci.nextArgument();
+    script = System.getProperty("org.foobar.python.scripts.user", "C:/data/workspaces/python-rpc/org.eclipse.triquetrum.python.service.example/scripts")
+        + File.separator + script;
+    if (!script.endsWith(".py")) {
+      script += ".py";
+    }
+    try {
+      PythonService service = PythonService.openConnection("python");
+      Map<String, Serializable> data = new HashMap<String, Serializable>();
+      String param = null;
+      while ((param = ci.nextArgument()) != null) {
+        String[] parts = param.split("=");
+        if (parts.length == 2) {
+          data.put(parts[0].trim(), parts[1].trim());
+        } else {
+          System.err.println("Invalid param=value format for " + param);
+          System.err.println(getHelp());
+        }
+      }
+      final Map<String, ? extends Object> result = service.runScript(script, data);
+      System.out.println(result);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 }

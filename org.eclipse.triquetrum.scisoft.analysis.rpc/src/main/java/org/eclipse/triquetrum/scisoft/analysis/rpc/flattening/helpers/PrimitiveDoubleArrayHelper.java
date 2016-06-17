@@ -17,29 +17,29 @@ import org.eclipse.triquetrum.scisoft.analysis.rpc.flattening.IRootFlattener;
 
 public class PrimitiveDoubleArrayHelper extends PrimitiveArrayHelper {
 
-	@Override
-	public Object unflatten(Object obj, IRootFlattener rootFlattener) {
-		Object[] array = (Object[]) obj;
-		double[] doubleArray = new double[array.length];
-		for (int i = 0; i < doubleArray.length; i++) {
-			doubleArray[i] = (Double) array[i];
-		}
-		return doubleArray;
-	}
+  @Override
+  public Object unflatten(Object obj, IRootFlattener rootFlattener) {
+    Object[] array = (Object[]) obj;
+    double[] doubleArray = new double[array.length];
+    for (int i = 0; i < doubleArray.length; i++) {
+      doubleArray[i] = (Double) array[i];
+    }
+    return doubleArray;
+  }
 
-	@Override
-	public boolean canUnFlatten(Object obj) {
-		if (!(obj instanceof Object[])) {
-			return false;
-		}
-		Object[] array = (Object[]) obj;
-		for (int i = 0; i < array.length; i++) {
-			if (!(array[i] instanceof Double)) {
-				return false;
-			}
-		}
-		return array.length > 0;
+  @Override
+  public boolean canUnFlatten(Object obj) {
+    if (!(obj instanceof Object[])) {
+      return false;
+    }
+    Object[] array = (Object[]) obj;
+    for (int i = 0; i < array.length; i++) {
+      if (!(array[i] instanceof Double)) {
+        return false;
+      }
+    }
+    return array.length > 0;
 
-	}
+  }
 
 }

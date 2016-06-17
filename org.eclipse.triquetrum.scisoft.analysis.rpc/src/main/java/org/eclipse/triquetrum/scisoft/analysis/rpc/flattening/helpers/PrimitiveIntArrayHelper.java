@@ -17,29 +17,29 @@ import org.eclipse.triquetrum.scisoft.analysis.rpc.flattening.IRootFlattener;
 
 public class PrimitiveIntArrayHelper extends PrimitiveArrayHelper {
 
-	@Override
-	public Object unflatten(Object obj, IRootFlattener rootFlattener) {
-		Object[] array = (Object[]) obj;
-		int[] intArray = new int[array.length];
-		for (int i = 0; i < intArray.length; i++) {
-			intArray[i] = (Integer) array[i];
-		}
-		return intArray;
-	}
+  @Override
+  public Object unflatten(Object obj, IRootFlattener rootFlattener) {
+    Object[] array = (Object[]) obj;
+    int[] intArray = new int[array.length];
+    for (int i = 0; i < intArray.length; i++) {
+      intArray[i] = (Integer) array[i];
+    }
+    return intArray;
+  }
 
-	@Override
-	public boolean canUnFlatten(Object obj) {
-		if (!(obj instanceof Object[])) {
-			return false;
-		}
-		Object[] array = (Object[]) obj;
-		for (int i = 0; i < array.length; i++) {
-			if (!(array[i] instanceof Integer)) {
-				return false;
-			}
-		}
-		return array.length > 0;
+  @Override
+  public boolean canUnFlatten(Object obj) {
+    if (!(obj instanceof Object[])) {
+      return false;
+    }
+    Object[] array = (Object[]) obj;
+    for (int i = 0; i < array.length; i++) {
+      if (!(array[i] instanceof Integer)) {
+        return false;
+      }
+    }
+    return array.length > 0;
 
-	}
+  }
 
 }

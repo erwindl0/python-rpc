@@ -18,24 +18,23 @@ import org.eclipse.triquetrum.scisoft.analysis.rpc.flattening.IRootFlattener;
 
 public class PassThroughFlatteningHelper implements IFlattener<Object> {
 
-	@Override
-	public Object flatten(Object obj, IRootFlattener rootFlattener) {
-		return obj;
-	}
+  @Override
+  public Object flatten(Object obj, IRootFlattener rootFlattener) {
+    return obj;
+  }
 
-	@Override
-	public Object unflatten(Object obj, IRootFlattener rootFlattener) {
-		return obj;
-	}
+  @Override
+  public Object unflatten(Object obj, IRootFlattener rootFlattener) {
+    return obj;
+  }
 
-	@Override
-	public boolean canFlatten(Object obj) {
-		return obj instanceof Integer || obj instanceof Boolean || obj instanceof String || obj instanceof Double
-				|| obj instanceof byte[];
-	}
+  @Override
+  public boolean canFlatten(Object obj) {
+    return obj instanceof Integer || obj instanceof Boolean || obj instanceof String || obj instanceof Double || obj instanceof byte[];
+  }
 
-	@Override
-	public boolean canUnFlatten(Object obj) {
-		return canFlatten(obj);
-	}
+  @Override
+  public boolean canUnFlatten(Object obj) {
+    return canFlatten(obj);
+  }
 }

@@ -27,17 +27,16 @@ import org.apache.xmlrpc.serializer.DoubleSerializer;
  */
 public class AnalysisRpcTypeFactoryImpl extends TypeFactoryImpl {
 
-	public AnalysisRpcTypeFactoryImpl(XmlRpcController pController) {
-		super(pController);
-	}
+  public AnalysisRpcTypeFactoryImpl(XmlRpcController pController) {
+    super(pController);
+  }
 
-	@Override
-	public TypeParser getParser(XmlRpcStreamConfig pConfig, NamespaceContextImpl pContext, String pURI,
-			String pLocalName) {
-		if (DoubleSerializer.DOUBLE_TAG.equals(pLocalName)) {
-			return new AnalysisRpcDoubleParser();
-		}
-		return super.getParser(pConfig, pContext, pURI, pLocalName);
-	}
+  @Override
+  public TypeParser getParser(XmlRpcStreamConfig pConfig, NamespaceContextImpl pContext, String pURI, String pLocalName) {
+    if (DoubleSerializer.DOUBLE_TAG.equals(pLocalName)) {
+      return new AnalysisRpcDoubleParser();
+    }
+    return super.getParser(pConfig, pContext, pURI, pLocalName);
+  }
 
 }

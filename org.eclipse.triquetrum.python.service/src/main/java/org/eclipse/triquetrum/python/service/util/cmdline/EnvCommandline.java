@@ -19,8 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Extends the <code>Commandline</code> class to provide a means to manipulate
- * the OS environment under which the command will run.
+ * Extends the <code>Commandline</code> class to provide a means to manipulate the OS environment under which the command will run.
  * 
  * @author <a href="mailto:rjmpsmith@hotmail.com">Robert J. Smith</a>
  */
@@ -34,10 +33,10 @@ public class EnvCommandline extends Commandline {
   private OSEnvironment env = new OSEnvironment();
 
   /**
-   * Constructor which takes a command line string and attempts to parse it into
-   * it's various components.
+   * Constructor which takes a command line string and attempts to parse it into it's various components.
    * 
-   * @param command The command
+   * @param command
+   *          The command
    */
   public EnvCommandline(String command) {
     super(command);
@@ -53,18 +52,20 @@ public class EnvCommandline extends Commandline {
   /**
    * Sets a variable within the environment under which the command will be run.
    * 
-   * @param var The environment variable to set
-   * @param value The value of the variable
+   * @param var
+   *          The environment variable to set
+   * @param value
+   *          The value of the variable
    */
   public void setVariable(String var, String value) {
     env.add(var, value);
   }
 
   /**
-   * Gets the value of an environment variable. The variable name is case
-   * sensitive.
+   * Gets the value of an environment variable. The variable name is case sensitive.
    * 
-   * @param var The variable for which you wish the value
+   * @param var
+   *          The variable for which you wish the value
    * @return The value of the variable, or <code>null</code> if not found
    */
   public String getVariable(String var) {

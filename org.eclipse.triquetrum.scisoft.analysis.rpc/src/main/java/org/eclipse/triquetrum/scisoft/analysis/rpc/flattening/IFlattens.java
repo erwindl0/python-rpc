@@ -19,11 +19,11 @@ package org.eclipse.triquetrum.scisoft.analysis.rpc.flattening;
  * @see IFlattener
  */
 public interface IFlattens {
-	/**
-	 * Return the flattened form of this object, possibly using rootFlattener to flatten any contained objects.
-	 * 
-	 * @param rootFlattener
-	 * @return the flattened form of this object
-	 */
-	public Object flatten(IRootFlattener rootFlattener);
+  /**
+   * Return the flattened form of this object, possibly using rootFlattener to flatten any contained objects.
+   * 
+   * @param rootFlattener
+   * @return the flattened form of this object
+   */
+  public Object flatten(IRootFlattener rootFlattener);
 }

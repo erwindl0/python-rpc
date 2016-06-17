@@ -20,28 +20,28 @@ import org.eclipse.triquetrum.scisoft.analysis.rpc.flattening.IRootFlattener;
 
 public class ListHelper implements IFlattener<List<Object>> {
 
-	public ListHelper() {
-	}
+  public ListHelper() {
+  }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public Object flatten(Object obj, IRootFlattener rootFlattener) {
-		List<Object> l = (List<Object>) obj;
-		return rootFlattener.flatten(l.toArray());
-	}
+  @SuppressWarnings("unchecked")
+  @Override
+  public Object flatten(Object obj, IRootFlattener rootFlattener) {
+    List<Object> l = (List<Object>) obj;
+    return rootFlattener.flatten(l.toArray());
+  }
 
-	@Override
-	public List<Object> unflatten(Object obj, IRootFlattener rootFlattener) {
-		throw new AssertionError();
-	}
+  @Override
+  public List<Object> unflatten(Object obj, IRootFlattener rootFlattener) {
+    throw new AssertionError();
+  }
 
-	@Override
-	public boolean canFlatten(Object obj) {
-		return obj instanceof List;
-	}
+  @Override
+  public boolean canFlatten(Object obj) {
+    return obj instanceof List;
+  }
 
-	@Override
-	public boolean canUnFlatten(Object obj) {
-		return false;
-	}
+  @Override
+  public boolean canUnFlatten(Object obj) {
+    return false;
+  }
 }

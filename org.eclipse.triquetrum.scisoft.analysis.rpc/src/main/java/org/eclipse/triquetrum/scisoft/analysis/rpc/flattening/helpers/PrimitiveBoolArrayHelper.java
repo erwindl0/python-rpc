@@ -17,28 +17,28 @@ import org.eclipse.triquetrum.scisoft.analysis.rpc.flattening.IRootFlattener;
 
 public class PrimitiveBoolArrayHelper extends PrimitiveArrayHelper {
 
-	@Override
-	public Object unflatten(Object obj, IRootFlattener rootFlattener) {
-		Object[] array = (Object[]) obj;
-		boolean[] boolArray = new boolean[array.length];
-		for (int i = 0; i < boolArray.length; i++) {
-			boolArray[i] = (Boolean) array[i];
-		}
-		return boolArray;
-	}
+  @Override
+  public Object unflatten(Object obj, IRootFlattener rootFlattener) {
+    Object[] array = (Object[]) obj;
+    boolean[] boolArray = new boolean[array.length];
+    for (int i = 0; i < boolArray.length; i++) {
+      boolArray[i] = (Boolean) array[i];
+    }
+    return boolArray;
+  }
 
-	@Override
-	public boolean canUnFlatten(Object obj) {
-		if (!(obj instanceof Object[])) {
-			return false;
-		}
-		Object[] array = (Object[]) obj;
-		for (int i = 0; i < array.length; i++) {
-			if (!(array[i] instanceof Boolean)) {
-				return false;
-			}
-		}
-		return array.length > 0;
+  @Override
+  public boolean canUnFlatten(Object obj) {
+    if (!(obj instanceof Object[])) {
+      return false;
+    }
+    Object[] array = (Object[]) obj;
+    for (int i = 0; i < array.length; i++) {
+      if (!(array[i] instanceof Boolean)) {
+        return false;
+      }
+    }
+    return array.length > 0;
 
-	}
+  }
 }

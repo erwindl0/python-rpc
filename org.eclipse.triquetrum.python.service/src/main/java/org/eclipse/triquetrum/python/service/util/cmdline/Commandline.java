@@ -21,9 +21,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Commandline objects help handling command lines specifying processes to
- * execute. The class can be used to define a command line as nested elements or
- * as a helper to define a command line by an application.
+ * Commandline objects help handling command lines specifying processes to execute. The class can be used to define a command line as nested elements or as a
+ * helper to define a command line by an application.
  * <p>
  * <code>
  * &lt;someelement&gt;<br>
@@ -33,8 +32,7 @@ import org.slf4j.LoggerFactory;
  * &nbsp;&nbsp;&nbsp;&nbsp;&lt;argument value="argument 4" /&gt;<br>
  * &nbsp;&nbsp;&lt;/acommandline&gt;<br>
  * &lt;/someelement&gt;<br>
- * </code> The element <code>someelement</code> must provide a method
- * <code>createAcommandline</code> which returns an instance of this class.
+ * </code> The element <code>someelement</code> must provide a method <code>createAcommandline</code> which returns an instance of this class.
  * 
  * @author thomas.haas@softwired-inc.com
  * @author <a href="mailto:stefan.bodewig@epost.de">Stefan Bodewig</a>
@@ -81,7 +79,8 @@ public class Commandline implements Cloneable {
     /**
      * Sets a single commandline argument.
      * 
-     * @param value a single commandline argument.
+     * @param value
+     *          a single commandline argument.
      */
     public void setValue(String value) {
       parts = new String[] { value };
@@ -90,7 +89,8 @@ public class Commandline implements Cloneable {
     /**
      * Line to split into several commandline arguments.
      * 
-     * @param line line to split into several commandline arguments
+     * @param line
+     *          line to split into several commandline arguments
      */
     public void setLine(String line) {
       if (line == null) {
@@ -104,10 +104,10 @@ public class Commandline implements Cloneable {
     }
 
     /**
-     * Sets a single commandline argument to the absolute filename of the given
-     * file.
+     * Sets a single commandline argument to the absolute filename of the given file.
      * 
-     * @param value a single commandline argument.
+     * @param value
+     *          a single commandline argument.
      */
     public void setFile(File value) {
       parts = new String[] { value.getAbsolutePath() };
@@ -139,8 +139,7 @@ public class Commandline implements Cloneable {
     /**
      * Return the number of arguments that preceeded this marker.
      * <p>
-     * The name of the executable - if set - is counted as the very first
-     * argument.
+     * The name of the executable - if set - is counted as the very first argument.
      * </p>
      */
     public int getPosition() {
@@ -158,8 +157,7 @@ public class Commandline implements Cloneable {
   /**
    * Creates an argument object.
    * <p>
-   * Each commandline object has at most one instance of the argument class.
-   * This method calls <code>this.createArgument(false)</code>.
+   * Each commandline object has at most one instance of the argument class. This method calls <code>this.createArgument(false)</code>.
    * </p>
    * 
    * @see #createArgument(boolean)
@@ -175,8 +173,8 @@ public class Commandline implements Cloneable {
    * Each commandline object has at most one instance of the argument class.
    * </p>
    * 
-   * @param insertAtStart if true, the argument is inserted at the beginning of
-   *          the list of args, otherwise it is appended.
+   * @param insertAtStart
+   *          if true, the argument is inserted at the beginning of the list of args, otherwise it is appended.
    */
   public Argument createArgument(boolean insertAtStart) {
     Argument argument = new Argument();
@@ -223,8 +221,7 @@ public class Commandline implements Cloneable {
   }
 
   /**
-   * Returns all arguments defined by <code>addLine</code>,
-   * <code>addValue</code> or the argument object.
+   * Returns all arguments defined by <code>addLine</code>, <code>addValue</code> or the argument object.
    */
   public String[] getArguments() {
     Vector result = new Vector(arguments.size() * 2);
@@ -250,13 +247,12 @@ public class Commandline implements Cloneable {
   /**
    * Put quotes around the given String if necessary.
    * <p>
-   * If the argument doesn't include spaces or quotes, return it as is. If it
-   * contains double quotes, use single quotes - else surround the argument by
-   * double quotes.
+   * If the argument doesn't include spaces or quotes, return it as is. If it contains double quotes, use single quotes - else surround the argument by double
+   * quotes.
    * </p>
    * 
-   * @exception CommandLineException if the argument contains both, single and
-   *              double quotes.
+   * @exception CommandLineException
+   *              if the argument contains both, single and double quotes.
    */
   public static String quoteArgument(String argument) throws CommandLineException {
     if (argument.indexOf("\"") > -1) {
@@ -377,8 +373,7 @@ public class Commandline implements Cloneable {
   }
 
   /**
-   * Clear out the arguments but leave the executable in place for another
-   * operation.
+   * Clear out the arguments but leave the executable in place for another operation.
    */
   public void clearArgs() {
     arguments.removeAllElements();
@@ -387,8 +382,7 @@ public class Commandline implements Cloneable {
   /**
    * Return a marker.
    * <p>
-   * This marker can be used to locate a position on the commandline - to insert
-   * something for example - when all parameters have been set.
+   * This marker can be used to locate a position on the commandline - to insert something for example - when all parameters have been set.
    * </p>
    */
   public Marker createMarker() {

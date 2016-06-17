@@ -21,32 +21,32 @@ import org.eclipse.triquetrum.scisoft.analysis.rpc.flattening.IRootFlattener;
 
 abstract public class FlatteningHelper<T> implements IFlattener<T> {
 
-	final private Class<T> type;
+  final private Class<T> type;
 
-	public FlatteningHelper(Class<T> type) {
-		this.type = type;
-	}
+  public FlatteningHelper(Class<T> type) {
+    this.type = type;
+  }
 
-	@Override
-	public abstract Object flatten(Object obj, IRootFlattener rootFlattener);
+  @Override
+  public abstract Object flatten(Object obj, IRootFlattener rootFlattener);
 
-	@Override
-	public abstract T unflatten(Object obj, IRootFlattener rootFlattener);
+  @Override
+  public abstract T unflatten(Object obj, IRootFlattener rootFlattener);
 
-	@Override
-	public boolean canFlatten(Object obj) {
-		return type.isAssignableFrom(obj.getClass());
-	}
+  @Override
+  public boolean canFlatten(Object obj) {
+    return type.isAssignableFrom(obj.getClass());
+  }
 
-	protected Map<String, Object> getFlattenedOutMap(Class<T> clazz) {
-		Map<String, Object> returnMap = new HashMap<String, Object>();
-		returnMap.put(IFlattener.TYPE_KEY, clazz.getCanonicalName());
-		return returnMap;
+  protected Map<String, Object> getFlattenedOutMap(Class<T> clazz) {
+    Map<String, Object> returnMap = new HashMap<String, Object>();
+    returnMap.put(IFlattener.TYPE_KEY, clazz.getCanonicalName());
+    return returnMap;
 
-	}
+  }
 
-	final protected String getTypeCanonicalName() {
-		return type.getCanonicalName();
-	}
+  final protected String getTypeCanonicalName() {
+    return type.getCanonicalName();
+  }
 
 }

@@ -20,13 +20,13 @@ import org.eclipse.triquetrum.scisoft.analysis.rpc.flattening.IRootFlattener;
 
 public class UUIDHelper extends SortOfEnumHelper<UUID> {
 
-	public UUIDHelper() {
-		super(UUID.class);
-	}
+  public UUIDHelper() {
+    super(UUID.class);
+  }
 
-	@Override
-	public UUID unflatten(Map<?, ?> inMap, IRootFlattener rootFlattener) {
-		return UUID.fromString(inMap.get(CONTENT).toString());
-	}
+  @Override
+  public UUID unflatten(Map<?, ?> inMap, IRootFlattener rootFlattener) {
+    return UUID.fromString(inMap.get(CONTENT).toString());
+  }
 
 }

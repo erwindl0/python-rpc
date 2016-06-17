@@ -48,7 +48,8 @@ public class ManagedCommandline extends EnvCommandline {
   /**
    * Constructor which takes a command line string and attempts to parse it into it's various components.
    * 
-   * @param command The command
+   * @param command
+   *          The command
    */
   public ManagedCommandline(String command) {
     super(command);
@@ -182,8 +183,10 @@ public class ManagedCommandline extends EnvCommandline {
     /**
      * Create a StreamGobbler.
      * 
-     * @param inputStream The stream to read from.
-     * @param name The name of this StreamReaderThread, which is useful for debugging.
+     * @param inputStream
+     *          The stream to read from.
+     * @param name
+     *          The name of this StreamReaderThread, which is useful for debugging.
      */
     StreamGobbler(InputStream inputStream, String name) {
       super(name);

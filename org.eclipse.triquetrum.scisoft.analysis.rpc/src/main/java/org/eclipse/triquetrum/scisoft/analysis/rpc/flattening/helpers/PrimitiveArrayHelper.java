@@ -19,20 +19,20 @@ import org.eclipse.triquetrum.scisoft.analysis.rpc.flattening.IRootFlattener;
 
 abstract public class PrimitiveArrayHelper implements IFlattener<Object> {
 
-	@Override
-	public Object flatten(Object obj, IRootFlattener rootFlattener) {
-		if (obj instanceof int[]) {
-			return ArrayUtils.toObject((int[]) obj);
-		} else if (obj instanceof boolean[]) {
-			return ArrayUtils.toObject((boolean[]) obj);
-		} else if (obj instanceof double[]) {
-			return ArrayUtils.toObject((double[]) obj);
-		}
-		throw new AssertionError();
-	}
+  @Override
+  public Object flatten(Object obj, IRootFlattener rootFlattener) {
+    if (obj instanceof int[]) {
+      return ArrayUtils.toObject((int[]) obj);
+    } else if (obj instanceof boolean[]) {
+      return ArrayUtils.toObject((boolean[]) obj);
+    } else if (obj instanceof double[]) {
+      return ArrayUtils.toObject((double[]) obj);
+    }
+    throw new AssertionError();
+  }
 
-	@Override
-	public boolean canFlatten(Object obj) {
-		return obj instanceof int[] || obj instanceof boolean[] || obj instanceof double[];
-	}
+  @Override
+  public boolean canFlatten(Object obj) {
+    return obj instanceof int[] || obj instanceof boolean[] || obj instanceof double[];
+  }
 }

@@ -17,15 +17,15 @@ import org.eclipse.triquetrum.scisoft.analysis.rpc.flattening.IRootFlattener;
 import org.eclipse.triquetrum.scisoft.analysis.rpc.flattening.RootFlattener;
 
 public class FlatteningService {
-	private static IRootFlattener instance = new RootFlattener();
+  private static IRootFlattener instance = new RootFlattener();
 
-	/**
-	 * Get Root Flattener used by Analysis RPC
-	 * 
-	 * @return instance
-	 */
-	public static IRootFlattener getFlattener() {
-		return instance;
-	}
+  /**
+   * Get Root Flattener used by Analysis RPC
+   * 
+   * @return instance
+   */
+  public static IRootFlattener getFlattener() {
+    return instance;
+  }
 
 }

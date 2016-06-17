@@ -18,20 +18,20 @@ import java.util.Map;
 import org.eclipse.triquetrum.scisoft.analysis.rpc.flattening.IRootFlattener;
 
 abstract public class SortOfEnumHelper<T> extends MapFlatteningHelper<T> {
-	public SortOfEnumHelper(Class<T> type) {
-		super(type);
-	}
+  public SortOfEnumHelper(Class<T> type) {
+    super(type);
+  }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public Map<String, Object> flatten(Object obj, IRootFlattener rootFlattenerj) {
-		T typedObj = (T) obj;
-		Map<String, Object> outMap = super.createMap(getTypeCanonicalName());
-		outMap.put(CONTENT, typedObj.toString());
-		return outMap;
-	}
+  @SuppressWarnings("unchecked")
+  @Override
+  public Map<String, Object> flatten(Object obj, IRootFlattener rootFlattenerj) {
+    T typedObj = (T) obj;
+    Map<String, Object> outMap = super.createMap(getTypeCanonicalName());
+    outMap.put(CONTENT, typedObj.toString());
+    return outMap;
+  }
 
-	@Override
-	public abstract T unflatten(Map<?, ?> inMap, IRootFlattener rootFlattener);
+  @Override
+  public abstract T unflatten(Map<?, ?> inMap, IRootFlattener rootFlattener);
 
 }
