@@ -20,18 +20,15 @@ Analysis RPC Package
 
 import os
 if os.name == 'java':
-    import jython.jyrpc as _rpc #@UnusedImport
-    import jython.jywrapper as _wrapper #@UnusedImport
-    import jython.jyflatten as _flatten #@UnusedImport
-else:
-    import python.pyrpc as _rpc #@Reimport
-    import python.pywrapper as _wrapper #@Reimport
-    import python.pyflatten as _flatten #@Reimport
+    raise 'Jython is unsupported'
+
+import python.pyrpc as _rpc #@Reimport
+import python.pywrapper as _wrapper #@Reimport
+import python.pyflatten as _flatten #@Reimport
 
 rpcserver=_rpc.rpcserver
 rpcclient=_rpc.rpcclient
 typednone=_wrapper.typednone
-abstractdatasetdescriptor=_wrapper.abstractdatasetdescriptor
 binarywrapper=_wrapper.binarywrapper
 settemplocation=_flatten.settemplocation
 
@@ -58,12 +55,6 @@ if __name__ == '__main__':
         for handler_name in handler_names:
             server.add_handler(handler_name, g[handler_name])
     server.add_handler('addHandlers', addHandlers)
-
-    def setPlottingPort(port):
-        if port > 0:
-            import scisoftpy.plot as plot
-            plot.setremoteport(rpcport=port)
-    server.add_handler('setPlottingPort', setPlottingPort)
 
     # Run the server's main loop
     server.serve_forever()

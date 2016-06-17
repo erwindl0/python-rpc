@@ -38,31 +38,6 @@ class typednone(object):
     def __repr__(self):
         return '%s(%s)' % (self.__class__.__name__, self.__dict__.__repr__())
 
-
-class abstractdatasetdescriptor(object):
-    '''
-    Use this class to describe an AbstractDataset or ndarray that already resides on disk and can be loaded 
-    using the file loaders. This object is flattened to a flattened representation that is unflattened 
-    by AbstractDatasetHelper.
-    The unflattened form of this type is an AbstractDataset
-    '''
-    def __init__(self, filename=None, deleteAfterLoad=False, index=None, name=None):
-        '''
-        Create a new descriptor
-        Parameters:
-          filename- the file to load
-          deleteAfterLoad- true to remove the file once loaded
-          index- Index of the data set to load if no name is specified
-          name- Name of the data set to load
-          
-        If neither name or index is specified, load index 0
-        '''
-        self.filename = filename
-        self.deleteAfterLoad = deleteAfterLoad
-        self.index = index
-        self.name = name
-    
-    
 #Use this class to wrap a Binary object, typically a str of bytes
 import xmlrpclib
 binarywrapper = xmlrpclib.Binary

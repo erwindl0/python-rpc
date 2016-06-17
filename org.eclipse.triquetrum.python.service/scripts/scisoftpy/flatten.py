@@ -21,9 +21,8 @@ For documentation, refer to Java IFlattener and IRootFlattener
 
 import os
 if os.name == 'java':
-    import jython.jyflatten as _flatten #@UnusedImport
-else:
-    import python.pyflatten as _flatten #@Reimport
+    raise 'Jython is unsupported'
+import python.pyflatten as _flatten #@Reimport
 
 flatten=_flatten.flatten
 unflatten=_flatten.unflatten
