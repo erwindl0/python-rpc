@@ -13,10 +13,15 @@
 package org.eclipse.triquetrum.python.service.example;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.osgi.framework.console.CommandInterpreter;
 import org.eclipse.osgi.framework.console.CommandProvider;
 import org.eclipse.triquetrum.python.service.PythonService;
@@ -35,6 +40,9 @@ import org.eclipse.triquetrum.python.service.PythonService;
  */
 public class TestRunner implements CommandProvider {
 
+  private static final String PLUGIN_ID = "org.eclipse.triquetrum.python.service.example";
+  private static final String OVERRIDE_LOCATION_PROPERTY = PLUGIN_ID + ".scripts.user";
+
   public String getHelp() {
     StringBuffer buffer = new StringBuffer();
     buffer.append("\n---Python RPC test---\n");
@@ -42,18 +50,19 @@ public class TestRunner implements CommandProvider {
     buffer.append("\t E.g. : ");
     buffer.append("\t osgi> runScript helloworld input1=hi input2=ho\n");
     buffer.append("\t the script filename should point to a file in the user scripts folder,\n");
-    buffer.append("\t whose location is identified by the system property org.foobar.python.scripts.user.\n");
+    buffer.append("\t whose location is in the org.eclipse.triquetrum.python.service.example\n");
+    buffer.append("\t plug-in in the scripts directory. The location can be overridden by setting\n");
+    buffer.append("\t system property " + OVERRIDE_LOCATION_PROPERTY + "\n");
     return buffer.toString();
   }
 
   public void _runScript(CommandInterpreter ci) {
-    String script = ci.nextArgument();
-    script = System.getProperty("org.foobar.python.scripts.user", "C:/data/workspaces/python-rpc/org.eclipse.triquetrum.python.service.example/scripts")
-        + File.separator + script;
-    if (!script.endsWith(".py")) {
-      script += ".py";
-    }
     try {
+      String script = ci.nextArgument();
+      script = getExampleScriptsHome() + File.separator + script;
+      if (!script.endsWith(".py")) {
+        script += ".py";
+      }
       PythonService service = PythonService.openConnection("python");
       Map<String, Serializable> data = new HashMap<String, Serializable>();
       String param = null;
@@ -72,4 +81,20 @@ public class TestRunner implements CommandProvider {
       e.printStackTrace();
     }
   }
+
+  private String getExampleScriptsHome() throws IOException, URISyntaxException {
+    String location = System.getProperty(OVERRIDE_LOCATION_PROPERTY);
+    if (location != null) {
+      return location;
+    }
+
+    URL url = new URL("platform:/plugin/" + PLUGIN_ID + "/scripts");
+    URL fileURL = FileLocator.toFileURL(url);
+    File exampleScriptsHome = new File(URIUtil.toURI(fileURL));
+    if (!exampleScriptsHome.exists()) {
+      throw new IOException("Failed to find " + PLUGIN_ID + "/scripts, expected it here: " + exampleScriptsHome);
+    }
+    return exampleScriptsHome.toString();
+  }
+
 }

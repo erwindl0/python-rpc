@@ -9,3 +9,5 @@ Import-Package: org.eclipse.osgi.framework.console,
  org.eclipse.triquetrum.python.service;version="1.0.2"
 Service-Component: OSGI-INF/component.xml
 Bundle-ActivationPolicy: lazy
+Eclipse-BundleShape: dir
+Require-Bundle: org.eclipse.equinox.common
