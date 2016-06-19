@@ -88,23 +88,10 @@ class passThroughHelper(object):
         return obj
 
     def canflatten(self, obj):
-        return isinstance(obj, (str, int, long, float, _wrapper.binarywrapper))
+        return isinstance(obj, (unicode, str, int, long, float, _wrapper.binarywrapper))
 
     def canunflatten(self, obj):
         return self.canflatten(obj)
-
-class unicodeHelper(object):
-    def flatten(self, obj):
-        return str(obj)
-    
-    def unflatten(self, obj):
-        raise NotImplementedError()
-
-    def canflatten(self, obj):
-        return isinstance(obj, unicode)
-
-    def canunflatten(self, obj):
-        return False
 
 class listAndTupleHelper(object):
     def flatten(self, obj):
@@ -308,7 +295,7 @@ class exceptionHelper(flatteningHelper):
     
 helpers = [noneHelper(),
            dictHelper(), passThroughHelper(), listAndTupleHelper(),
-           uuidHelper(), exceptionHelper(), stackTraceElementHelper(), unicodeHelper()]
+           uuidHelper(), exceptionHelper(), stackTraceElementHelper()]
 
 def addhelper(helper):
     helpers.insert(0, helper)
