@@ -242,4 +242,21 @@ public class PythonHelper {
     }
     return scriptsHome.toString();
   }
+
+  public static String getSciSoftPyHome() throws IOException, URISyntaxException {
+    File scriptsHome;
+
+    try {
+      URL url = new URL("platform:/plugin/org.eclipse.triquetrum.python.service/scripts");
+      URL fileURL = FileLocator.toFileURL(url);
+      scriptsHome = new File(URIUtil.toURI(fileURL));
+    } catch (MalformedURLException e) {
+      // Running without OSGi, make a guess the scripts are relative to the local directory
+      scriptsHome = new File("../org.eclipse.triquetrum.python.service/scripts/");
+    }
+    if (!scriptsHome.exists()) {
+      throw new IOException("Failed to find org.eclipse.triquetrum.python.service/scripts, expected it here: " + scriptsHome);
+    }
+    return scriptsHome.toString();
+  }
 }

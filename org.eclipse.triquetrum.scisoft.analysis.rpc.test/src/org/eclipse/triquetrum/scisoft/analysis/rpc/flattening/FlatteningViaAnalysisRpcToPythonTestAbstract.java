@@ -19,14 +19,14 @@ import org.eclipse.triquetrum.scisoft.analysis.rpc.test.PythonHelper.PythonRunIn
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
-
 abstract public class FlatteningViaAnalysisRpcToPythonTestAbstract extends FlatteningTestAbstract {
   private static PythonRunInfo pythonRunInfo;
   protected static AnalysisRpcClient client;
 
   @BeforeClass
   public static void start() throws Exception {
-    pythonRunInfo = PythonHelper.runPythonFileBackground(PythonHelper.getScriptsHome() + "/loopbackanalysisrpc.py");
+    pythonRunInfo = PythonHelper.runPythonFileBackground(PythonHelper.getScriptsHome() + "/loopbackanalysisrpc.py",
+        new String[] { PythonHelper.getSciSoftPyHome() });
 
     Thread.sleep(SERVER_WAIT_TIME); // wait for server to start
 

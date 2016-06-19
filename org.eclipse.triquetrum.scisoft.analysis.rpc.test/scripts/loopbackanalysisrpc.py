@@ -12,8 +12,7 @@
 ###
 
 import os, sys
-scisoftpath = os.getcwd() + '/../org.eclipse.triquetrum.python.service/scripts'
-sys.path.append(scisoftpath)
+sys.path.append(sys.argv[1])
 
 import scisoftpy as dnp #@UnresolvedImport
 import thread

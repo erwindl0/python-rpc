@@ -13,8 +13,7 @@
 
 # Set up environment
 import os, sys
-scisoftpath = os.getcwd() + '/../org.eclipse.triquetrum.python.service/scripts'
-sys.path.append(scisoftpath)
+sys.path.append(sys.argv[1])
 import scisoftpy as dnp #@UnresolvedImport
 
 # define fancy function which is easier to write in Python
@@ -24,6 +23,6 @@ def python_cat(input1, input2):
 
 
 # Make the fancy function available
-rpcserver = dnp.rpc.rpcserver(int(sys.argv[1]))
+rpcserver = dnp.rpc.rpcserver(int(sys.argv[2]))
 rpcserver.add_handler("cat", python_cat)
 rpcserver.serve_forever()

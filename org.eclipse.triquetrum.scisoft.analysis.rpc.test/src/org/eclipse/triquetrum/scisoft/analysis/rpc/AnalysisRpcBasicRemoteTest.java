@@ -13,12 +13,10 @@
 
 package org.eclipse.triquetrum.scisoft.analysis.rpc;
 
-import org.eclipse.triquetrum.scisoft.analysis.rpc.AnalysisRpcClient;
 import org.eclipse.triquetrum.scisoft.analysis.rpc.test.NetUtils;
 import org.eclipse.triquetrum.scisoft.analysis.rpc.test.PythonHelper;
 import org.eclipse.triquetrum.scisoft.analysis.rpc.test.PythonHelper.PythonRunInfo;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -30,7 +28,8 @@ public class AnalysisRpcBasicRemoteTest {
   public void testBasicRemoteOperation() throws Exception {
     // Start the Python server
     int port = NetUtils.getFreePort(20000);
-    PythonRunInfo server = PythonHelper.runPythonFileBackground(PythonHelper.getScriptsHome() + "/rpcremote.py", new String[] { Integer.toString(port) });
+    PythonRunInfo server = PythonHelper.runPythonFileBackground(PythonHelper.getScriptsHome() + "/rpcremote.py",
+        new String[] { PythonHelper.getSciSoftPyHome(), Integer.toString(port) });
 
     try {
       // Create a new client to connect to the server (note that the ports match)

@@ -30,7 +30,8 @@ abstract public class FlatteningViaXmlRpcToPythonTestAbstract extends ExplicitFl
 
   @BeforeClass
   public static void start() throws Exception {
-    pythonRunInfo = PythonHelper.runPythonFileBackground(PythonHelper.getScriptsHome() + "/loopbackxmlrpc.py");
+    pythonRunInfo = PythonHelper.runPythonFileBackground(PythonHelper.getScriptsHome() + "/loopbackxmlrpc.py",
+        new String[] { PythonHelper.getSciSoftPyHome() });
 
     Thread.sleep(SERVER_WAIT_TIME); // wait for server to start
 
