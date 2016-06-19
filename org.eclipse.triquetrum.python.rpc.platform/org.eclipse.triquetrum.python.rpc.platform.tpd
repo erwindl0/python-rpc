@@ -8,6 +8,11 @@ location "http://download.eclipse.org/tools/orbit/downloads/drops/R2015111814595
 	org.apache.log4j
 	org.apache.ws.commons.util
 	org.apache.xmlrpc
+	org.hamcrest.core
+	org.hamcrest.generator
+	org.hamcrest.integration
+	org.hamcrest.library
+	org.junit
 	org.slf4j.api
 	org.slf4j.impl.log4j12
 	javax.xml

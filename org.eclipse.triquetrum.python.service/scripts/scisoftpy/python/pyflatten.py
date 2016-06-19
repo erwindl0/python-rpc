@@ -21,11 +21,7 @@ public for the purpose of testing, see pyflatten_test.py
 '''
 
 import scisoftpy.python.pywrapper as _wrapper
-import numpy as _np #@UnresolvedImport
-from tempfile import mkstemp
-import os
 import sys
-import copy
 import uuid
 import traceback
 

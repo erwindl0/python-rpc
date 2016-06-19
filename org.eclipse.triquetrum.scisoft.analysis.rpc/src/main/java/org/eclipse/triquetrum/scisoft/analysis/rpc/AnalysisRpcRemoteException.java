@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014-2016 Diamond Light Source Ltd., 
+ * Copyright (c) 2012-2016 Diamond Light Source Ltd.,
  *                         Kichwa Coders & iSencia Belgium NV.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,7 +18,7 @@ package org.eclipse.triquetrum.scisoft.analysis.rpc;
  * remote side supports text snippets for each line of stack trace they can be used.
  */
 public class AnalysisRpcRemoteException extends AnalysisRpcException {
-  private static final long serialVersionUID = -3299419152988663248L;
+  private static final long serialVersionUID = -7729269172566951025L;
   private String[] texts;
 
   public AnalysisRpcRemoteException() {
@@ -39,7 +39,7 @@ public class AnalysisRpcRemoteException extends AnalysisRpcException {
 
   /**
    * Set a list of text fragments corresponding to the stack trace of the exception. The stack trace and the texts should have the same number of elements.
-   * 
+   *
    * @param texts
    *          The texts. The array is copied.
    */
@@ -53,7 +53,7 @@ public class AnalysisRpcRemoteException extends AnalysisRpcException {
 
   /**
    * Retrieve a copy of the array of texts corresponding to the stack trace.
-   * 
+   *
    * @return array of texts or <code>null</code> if there are no texts associated or the associated texts are mismatched to the stack trace.
    */
   public String[] getStackTraceTexts() {
@@ -72,7 +72,7 @@ public class AnalysisRpcRemoteException extends AnalysisRpcException {
    * <p>
    * The stack trace is formatted in Python convention which is newest frames last. In addition, this formatting matches the console line tracker that PyDev
    * uses to make links back to Python files.
-   * 
+   *
    * @param limitStackTraceFileName
    *          If non-<code>null</code> will be used to limit the stack trace to frames called after code in this function. The parameter is checked against the
    *          end of the filename in the stack trace element {@link StackTraceElement#getFileName()}. If no frames or the last frame match then all the frames
