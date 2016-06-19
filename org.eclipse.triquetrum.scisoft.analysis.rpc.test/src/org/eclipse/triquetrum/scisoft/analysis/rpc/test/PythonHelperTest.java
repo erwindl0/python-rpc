@@ -13,9 +13,13 @@
 package org.eclipse.triquetrum.scisoft.analysis.rpc.test;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 
 public class PythonHelperTest {
+  @Rule
+  public Timeout globalTimeout = Timeout.seconds(2);
 
   // A quick test of the test
   @Test

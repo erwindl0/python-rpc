@@ -18,13 +18,17 @@ import org.eclipse.triquetrum.scisoft.analysis.rpc.AnalysisRpcException;
 import org.eclipse.triquetrum.scisoft.analysis.rpc.AnalysisRpcServer;
 import org.eclipse.triquetrum.scisoft.analysis.rpc.IAnalysisRpcHandler;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 
 /**
  * This is basically the same test as {@link AnalysisRpcBasicTest}, but with dynamically allocated port to listen on. This is achieved by creating a server
  * listening to port 0 and then calling {@link AnalysisRpcServer#getPort()} to find out what port was selected.
  */
 public class AnalysisRpcDefaultPortTest {
+  @Rule
+  public Timeout globalTimeout = Timeout.seconds(2);
 
   private static final String CAT_TWO_STRINGS = "cat";
 

@@ -18,12 +18,16 @@ import org.eclipse.triquetrum.scisoft.analysis.rpc.AnalysisRpcException;
 import org.eclipse.triquetrum.scisoft.analysis.rpc.AnalysisRpcServer;
 import org.eclipse.triquetrum.scisoft.analysis.rpc.IAnalysisRpcHandler;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 
 /**
  * This test is intended to show the basic operation of the RPC Client and Server
  */
 public class AnalysisRpcBasicTest {
+  @Rule
+  public Timeout globalTimeout = Timeout.seconds(2);
 
   private static final String CAT_TWO_STRINGS = "cat";
 

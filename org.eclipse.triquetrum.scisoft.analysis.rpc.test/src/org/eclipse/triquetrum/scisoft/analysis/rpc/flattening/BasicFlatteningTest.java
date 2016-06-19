@@ -19,13 +19,17 @@ import java.util.Map;
 import org.eclipse.triquetrum.scisoft.analysis.rpc.flattening.IRootFlattener;
 import org.eclipse.triquetrum.scisoft.analysis.rpc.flattening.RootFlattener;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 
 /**
  * This test is intended to be as minimal as possible to demonstrate operation of the flattening. For full testing see the {@link FlatteningTestAbstract}
  * hierarchy
  */
 public class BasicFlatteningTest {
+  @Rule
+  public Timeout globalTimeout = Timeout.seconds(2);
 
   @Test
   public void basicTest() {

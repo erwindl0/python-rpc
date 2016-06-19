@@ -21,9 +21,13 @@ import org.eclipse.triquetrum.scisoft.analysis.rpc.IAnalysisRpcHandler;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 
 public class AnalysisRpcExceptionsTest {
+  @Rule
+  public Timeout globalTimeout = Timeout.seconds(2);
 
   private static final class CatStringsHandler implements IAnalysisRpcHandler {
     @Override
@@ -50,7 +54,7 @@ public class AnalysisRpcExceptionsTest {
     analysisRpcServer.shutdown();
   }
 
-  @Test
+  @Test(timeout = 2000)
   public void testBasicOperation() throws AnalysisRpcException {
     String result = (String) analysisRpcClient.request(CAT_TWO_STRINGS, new Object[] { "Hello, ", "World!" });
     Assert.assertEquals("Hello, World!", result);

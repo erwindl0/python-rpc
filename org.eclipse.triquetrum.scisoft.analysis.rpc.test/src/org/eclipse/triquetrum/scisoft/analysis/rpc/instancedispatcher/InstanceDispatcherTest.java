@@ -20,11 +20,15 @@ import org.eclipse.triquetrum.scisoft.analysis.rpc.AnalysisRpcGenericInstanceDis
 import org.eclipse.triquetrum.scisoft.analysis.rpc.flattening.TypedNone;
 import org.junit.Assert;
 import org.junit.Assume;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 
 // a bunch of casts aren't needed, but I find readability is nicer with them all being consistent
 @SuppressWarnings("cast")
 public class InstanceDispatcherTest {
+  @Rule
+  public Timeout globalTimeout = Timeout.seconds(2);
 
   @Test
   public void testPrimitiveTypes() throws AnalysisRpcException {

@@ -31,9 +31,13 @@ import org.eclipse.triquetrum.scisoft.analysis.rpc.flattening.TypedNone;
 import org.eclipse.triquetrum.scisoft.analysis.rpc.internal.AnalysisRpcDoubleParser;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 
 abstract public class FlatteningTestAbstract {
+  @Rule
+  public Timeout globalTimeout = Timeout.seconds(2);
 
   /**
    * Waiting period for server to start up (in milliseconds)

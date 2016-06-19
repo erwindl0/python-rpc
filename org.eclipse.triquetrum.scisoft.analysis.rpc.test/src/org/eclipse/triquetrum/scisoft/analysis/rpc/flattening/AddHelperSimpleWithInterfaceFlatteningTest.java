@@ -21,7 +21,9 @@ import org.eclipse.triquetrum.scisoft.analysis.rpc.flattening.IFlattens;
 import org.eclipse.triquetrum.scisoft.analysis.rpc.flattening.IRootFlattener;
 import org.eclipse.triquetrum.scisoft.analysis.rpc.flattening.RootFlattener;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 
 /**
  * One of three tests that demonstrate creating custom flatteners and unflatteners.
@@ -33,6 +35,8 @@ import org.junit.Test;
  * </ul>
  */
 public class AddHelperSimpleWithInterfaceFlatteningTest {
+  @Rule
+  public Timeout globalTimeout = Timeout.seconds(2);
 
   /**
    * Dummy class that doesn't do anything, only exists to verify flattening and unflattening.

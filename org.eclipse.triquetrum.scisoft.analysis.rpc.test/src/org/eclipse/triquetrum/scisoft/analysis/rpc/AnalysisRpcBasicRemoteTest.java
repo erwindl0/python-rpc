@@ -17,12 +17,17 @@ import org.eclipse.triquetrum.scisoft.analysis.rpc.test.NetUtils;
 import org.eclipse.triquetrum.scisoft.analysis.rpc.test.PythonHelper;
 import org.eclipse.triquetrum.scisoft.analysis.rpc.test.PythonHelper.PythonRunInfo;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 
 /**
  * This test is intended to show the basic operation of the RPC Client and Server
  */
 public class AnalysisRpcBasicRemoteTest {
+
+  @Rule
+  public Timeout globalTimeout = Timeout.seconds(5);
 
   @Test
   public void testBasicRemoteOperation() throws Exception {

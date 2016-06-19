@@ -14,9 +14,13 @@ package org.eclipse.triquetrum.scisoft.analysis.rpc;
 
 import org.eclipse.triquetrum.scisoft.analysis.rpc.AnalysisRpcRemoteException;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 
 public class AnalysisRpcRemoteExceptionTest {
+  @Rule
+  public Timeout globalTimeout = Timeout.seconds(2);
 
   @Test
   public void testPreamble() {

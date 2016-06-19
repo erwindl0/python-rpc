@@ -15,26 +15,20 @@ package org.eclipse.triquetrum.scisoft.analysis.rpc;
 
 import org.eclipse.triquetrum.scisoft.analysis.rpc.test.NetUtils;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 
 public class AnalysisRpcAdvancedTest {
-  private static int PORT = 20000;
 
-  @Before
-  public void before()
-  {
-    // Find a free port on each test, start testing where
-    // we last left off.
-    PORT = NetUtils.getFreePort(PORT);
-  }
-
+  @Rule
+  public Timeout globalTimeout = Timeout.seconds(2);
 
   @Test
   public void testMultipleHandlers() throws AnalysisRpcException {
     AnalysisRpcServer analysisRpcServer = null;
     try {
-      analysisRpcServer = new AnalysisRpcServer(PORT);
+      analysisRpcServer = new AnalysisRpcServer(0);
       analysisRpcServer.start();
       analysisRpcServer.addHandler("cat", new IAnalysisRpcHandler() {
 
@@ -51,7 +45,7 @@ public class AnalysisRpcAdvancedTest {
         }
       });
 
-      AnalysisRpcClient analysisRpcClient = new AnalysisRpcClient(PORT);
+      AnalysisRpcClient analysisRpcClient = new AnalysisRpcClient(analysisRpcServer.getPort());
       String catResult = (String) analysisRpcClient.request("cat", new Object[] { "Hello, ", "World!" });
       Assert.assertEquals("Hello, World!", catResult);
       int lenResult = (Integer) analysisRpcClient.request("len", new Object[] { "Hello, ", "World!" });
@@ -66,7 +60,7 @@ public class AnalysisRpcAdvancedTest {
   public void testExceptionOnHandlerFlattening() throws AnalysisRpcException {
     AnalysisRpcServer analysisRpcServer = null;
     try {
-      analysisRpcServer = new AnalysisRpcServer(PORT);
+      analysisRpcServer = new AnalysisRpcServer(0);
       analysisRpcServer.start();
       analysisRpcServer.addHandler("flaterror", new IAnalysisRpcHandler() {
 
@@ -77,7 +71,7 @@ public class AnalysisRpcAdvancedTest {
         }
       });
 
-      AnalysisRpcClient analysisRpcClient = new AnalysisRpcClient(PORT);
+      AnalysisRpcClient analysisRpcClient = new AnalysisRpcClient(analysisRpcServer.getPort());
       // force a flattening exception on the call side
       try {
         analysisRpcClient.request("flaterror", new Object[] { "Hello" });
@@ -96,15 +90,17 @@ public class AnalysisRpcAdvancedTest {
   // pretty quickly
   @Test(expected = AnalysisRpcException.class, timeout = 2000)
   public void testConnectionTimesOutQuicklyEnough() throws AnalysisRpcException {
-    AnalysisRpcClient analysisRpcClient = new AnalysisRpcClient(PORT);
+    int port = NetUtils.getFreePort(20010);
+    AnalysisRpcClient analysisRpcClient = new AnalysisRpcClient(port);
     analysisRpcClient.request("doesnotexist", new Object[] { "Hello" });
   }
 
   @Test
   public void testIsAlive() throws AnalysisRpcException {
-    AnalysisRpcClient analysisRpcClient = new AnalysisRpcClient(PORT);
+    int port = NetUtils.getFreePort(20020);
+    AnalysisRpcClient analysisRpcClient = new AnalysisRpcClient(port);
     Assert.assertFalse(analysisRpcClient.isAlive());
-    AnalysisRpcServer analysisRpcServer = new AnalysisRpcServer(PORT);
+    AnalysisRpcServer analysisRpcServer = new AnalysisRpcServer(port);
     try {
       analysisRpcServer.start();
       Assert.assertTrue(analysisRpcClient.isAlive());
@@ -115,19 +111,20 @@ public class AnalysisRpcAdvancedTest {
 
   @Test
   public void waitIsAlive() throws AnalysisRpcException {
-    AnalysisRpcClient analysisRpcClient = new AnalysisRpcClient(PORT);
+    int port = NetUtils.getFreePort(20020);
+    AnalysisRpcClient analysisRpcClient = new AnalysisRpcClient(port);
     Assert.assertFalse(analysisRpcClient.isAlive());
     try {
-      analysisRpcClient.waitUntilAlive(1000);
+      analysisRpcClient.waitUntilAlive(250);
       Assert.fail();
     } catch (AnalysisRpcException e) {
       // test passes, waitUntilAlive has raised exception saying not ready
       // yet
     }
-    AnalysisRpcServer analysisRpcServer = new AnalysisRpcServer(PORT);
+    AnalysisRpcServer analysisRpcServer = new AnalysisRpcServer(port);
     try {
       analysisRpcServer.start();
-      analysisRpcClient.waitUntilAlive(1000);
+      analysisRpcClient.waitUntilAlive(250);
       Assert.assertTrue(analysisRpcClient.isAlive());
     } finally {
       analysisRpcServer.shutdown();
@@ -142,7 +139,7 @@ public class AnalysisRpcAdvancedTest {
   public void testProxy() throws AnalysisRpcException {
     AnalysisRpcServer analysisRpcServer = null;
     try {
-      analysisRpcServer = new AnalysisRpcServer(PORT);
+      analysisRpcServer = new AnalysisRpcServer(0);
       analysisRpcServer.start();
       analysisRpcServer.addHandler("cat", new IAnalysisRpcHandler() {
 
@@ -152,7 +149,7 @@ public class AnalysisRpcAdvancedTest {
         }
       });
 
-      AnalysisRpcClient analysisRpcClient = new AnalysisRpcClient(PORT);
+      AnalysisRpcClient analysisRpcClient = new AnalysisRpcClient(analysisRpcServer.getPort());
       TestProxy_Interface catObject = analysisRpcClient.newProxyInstance(TestProxy_Interface.class);
       String catResult = catObject.cat("Hello, ", "World!");
       Assert.assertEquals("Hello, World!", catResult);
@@ -176,7 +173,8 @@ public class AnalysisRpcAdvancedTest {
   public void testBadProxy() {
     // don't need a real server because this test makes sure the bad proxy
     // fails
-    AnalysisRpcClient analysisRpcClient = new AnalysisRpcClient(PORT);
+    int port = NetUtils.getFreePort(20010);
+    AnalysisRpcClient analysisRpcClient = new AnalysisRpcClient(port);
     TestBadProxy_Interface catObject = analysisRpcClient.newProxyInstance(TestBadProxy_Interface.class);
     try {
       catObject.cat("Hello, ", "World!");
