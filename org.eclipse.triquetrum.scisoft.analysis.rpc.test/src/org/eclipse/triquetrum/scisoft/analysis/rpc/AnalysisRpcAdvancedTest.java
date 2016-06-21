@@ -18,11 +18,12 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Timeout;
+import org.junit.runners.model.TestTimedOutException;
 
 public class AnalysisRpcAdvancedTest {
 
   @Rule
-  public Timeout globalTimeout = Timeout.seconds(2);
+  public Timeout globalTimeout = Timeout.seconds(5);
 
   @Test
   public void testMultipleHandlers() throws AnalysisRpcException {
@@ -51,8 +52,12 @@ public class AnalysisRpcAdvancedTest {
       int lenResult = (Integer) analysisRpcClient.request("len", new Object[] { "Hello, ", "World!" });
       Assert.assertEquals("Hello, World!".length(), lenResult);
     } finally {
-      if (analysisRpcServer != null)
+      if (analysisRpcServer != null) {
+        // XXX: On Windows this test sometimes timesout shutting down, I think this
+        // may be down to older versions of servers in Orbit, time to get them
+        // upgraded. The orbit versions are older than Diamond is using.
         analysisRpcServer.shutdown();
+      }
     }
   }
 
