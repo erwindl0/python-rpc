@@ -39,5 +39,9 @@ class typednone(object):
         return '%s(%s)' % (self.__class__.__name__, self.__dict__.__repr__())
 
 #Use this class to wrap a Binary object, typically a str of bytes
-import xmlrpclib
-binarywrapper = xmlrpclib.Binary
+try:
+    import xmlrpclib
+    binarywrapper = xmlrpclib.Binary
+except:
+    import xmlrpc.client
+    binarywrapper = xmlrpc.client.Binary

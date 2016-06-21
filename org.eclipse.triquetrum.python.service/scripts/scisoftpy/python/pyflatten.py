@@ -80,6 +80,9 @@ class dictHelper(flatteningHelper):
             rval[unflatten(k)] = unflatten(v)
         return rval
 
+passThroughTypes = (str, int, float, _wrapper.binarywrapper)
+if sys.hexversion < 0x03000000:
+    passThroughTypes = passThroughTypes + (unicode, long)
 class passThroughHelper(object):
     def flatten(self, obj):
         return obj
@@ -88,7 +91,7 @@ class passThroughHelper(object):
         return obj
 
     def canflatten(self, obj):
-        return isinstance(obj, (unicode, str, int, long, float, _wrapper.binarywrapper))
+        return isinstance(obj, passThroughTypes)
 
     def canunflatten(self, obj):
         return self.canflatten(obj)
@@ -224,12 +227,12 @@ class exceptionHelper(flatteningHelper):
             # being flattened is the exception
             def flatten_tb(tb):
                 # Set the stack order to newest on top
-                # (Java and Python have opposite order for storing 
-                # stack traces, this normalizes them) 
+                # (Java and Python have opposite order for storing
+                # stack traces, this normalizes them)
                 tb.reverse()
-                
+
                 # Ideally we would do "rval[self.TRACEBACK] = flatten(tb)" but
-                # there is no type info to do that, so instead we have to 
+                # there is no type info to do that, so instead we have to
                 # explicitly flatten
                 steHelper = stackTraceElementHelper()
                 stes = [steHelper.flatten(f) for f in tb]

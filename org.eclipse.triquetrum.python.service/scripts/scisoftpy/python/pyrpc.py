@@ -17,9 +17,16 @@
 '''
 AnalysisRpc implementation in Python
 '''
-from SocketServer import ThreadingMixIn
-from SimpleXMLRPCServer import SimpleXMLRPCRequestHandler, SimpleXMLRPCServer
-from xmlrpclib import ServerProxy
+try:
+    # Python 2
+    from SocketServer import ThreadingMixIn
+    from SimpleXMLRPCServer import SimpleXMLRPCRequestHandler, SimpleXMLRPCServer
+    from xmlrpclib import ServerProxy
+except:
+    # Python 3
+    from socketserver import ThreadingMixIn
+    from xmlrpc.server import SimpleXMLRPCRequestHandler, SimpleXMLRPCServer
+    from xmlrpc.client import ServerProxy
 import scisoftpy.python.pyflatten as _flatten
 
 class _method:
@@ -85,7 +92,7 @@ class rpcserver(object):
                 else:
                     ret = handler(*unflattened)
             flatret = _flatten.flatten(ret)
-        except Exception, e:
+        except Exception as e:
             flatret = _flatten.flatten(e)
         return flatret
     def _xmlrpchandler(self, destination, args):

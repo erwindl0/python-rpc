@@ -25,5 +25,5 @@ import os
 if os.name == 'java':
     raise 'Jython is unsupported'
 
-import flatten
-import rpc
+from scisoftpy import flatten
+from scisoftpy import rpc

@@ -14,8 +14,13 @@
 import os, sys
 sys.path.append(sys.argv[1])
 import scisoftpy as dnp #@UnresolvedImport
-from SimpleXMLRPCServer import SimpleXMLRPCServer
-from SimpleXMLRPCServer import SimpleXMLRPCRequestHandler
+try:
+    # Python 2
+    from SimpleXMLRPCServer import SimpleXMLRPCServer, SimpleXMLRPCRequestHandler
+except:
+    # Python 3
+    from xmlrpc.server import SimpleXMLRPCRequestHandler, SimpleXMLRPCServer
+
 
 # Create server
 class RequestHandler(SimpleXMLRPCRequestHandler):

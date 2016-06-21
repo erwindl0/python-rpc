@@ -22,9 +22,9 @@ import os
 if os.name == 'java':
     raise 'Jython is unsupported'
 
-import python.pyrpc as _rpc #@Reimport
-import python.pywrapper as _wrapper #@Reimport
-import python.pyflatten as _flatten #@Reimport
+from scisoftpy.python import pyrpc as _rpc #@Reimport
+from scisoftpy.python import pywrapper as _wrapper #@Reimport
+from scisoftpy.python import pyflatten as _flatten #@Reimport
 
 rpcserver=_rpc.rpcserver
 rpcclient=_rpc.rpcclient

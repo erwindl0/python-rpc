@@ -15,7 +15,12 @@ import os, sys
 sys.path.append(sys.argv[1])
 
 import scisoftpy as dnp #@UnresolvedImport
-import thread
+try:
+    # Python 2
+    import thread
+except:
+    # Python 3
+    import _thread as thread
 
 internal_rpcclient = dnp.rpc.rpcclient(8715)
 rpcserver = dnp.rpc.rpcserver(8714)

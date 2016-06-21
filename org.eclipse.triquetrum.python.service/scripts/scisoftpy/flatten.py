@@ -22,7 +22,7 @@ For documentation, refer to Java IFlattener and IRootFlattener
 import os
 if os.name == 'java':
     raise 'Jython is unsupported'
-import python.pyflatten as _flatten #@Reimport
+from scisoftpy.python import pyflatten as _flatten #@Reimport
 
 flatten=_flatten.flatten
 unflatten=_flatten.unflatten
