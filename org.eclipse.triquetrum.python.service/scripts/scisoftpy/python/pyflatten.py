@@ -1,12 +1,12 @@
 ###
 # Copyright 2011 Diamond Light Source Ltd.
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #   http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,7 +14,7 @@
 # limitations under the License.
 ###
 
-''' 
+'''
 Python version of flattening. See Java version for documentation on flattening.
 This module is generally for internal use by AnalysisRPC and is only made
 public for the purpose of testing, see pyflatten_test.py
@@ -35,10 +35,10 @@ def settemplocation(loc=None):
     '''
      Set a custom temporary file location. This is used by some flatteners to store large data sets which are faster
      to write to disk than send over XML-RPC.
-     
+
      There is no requirement for the unflattener at the other end to have the same temp location as a full path to the
      temp file should be stored in the flattened form.
-     
+
      loc new temp file location to use, or None to use default of system temp
     '''
     global _TEMP_LOCATION, _TEMP_LOCATION_SET
@@ -52,7 +52,7 @@ class flatteningHelper(object):
 
     def canunflatten(self, obj):
         return isinstance(obj, dict) and obj.get(TYPE) == self.typeName
-    
+
     def canflatten(self, obj):
         return isinstance(obj, self.typeObj)
 
@@ -60,10 +60,10 @@ class dictHelper(flatteningHelper):
     TYPE_NAME = "java.util.Map"
     KEYS = "keys"
     VALUES = "values"
-    
+
     def __init__(self):
         super(dictHelper, self).__init__(dict, self.TYPE_NAME)
-        
+
     def flatten(self, thisDict):
         rval = dict()
         rval[TYPE] = self.TYPE_NAME
@@ -86,7 +86,7 @@ if sys.hexversion < 0x03000000:
 class passThroughHelper(object):
     def flatten(self, obj):
         return obj
-    
+
     def unflatten(self, obj):
         return obj
 
@@ -102,14 +102,14 @@ class listAndTupleHelper(object):
         for thisItem in obj:
             outList.append(flatten(thisItem))
         return outList
-    
+
     def unflatten(self, obj):
         outList = []
         for thisItem in obj:
             outList.append(unflatten(thisItem))
         return outList
-        
-    
+
+
     def canflatten(self, obj):
         return isinstance(obj, (list, tuple))
 
@@ -120,7 +120,7 @@ class noneHelper(flatteningHelper):
     TYPE_NAME = "__None__"
     TYPED_NONE_TYPE = "typedNoneType"
     NULL = "null"
-    
+
     def __init__(self):
         super(noneHelper, self).__init__(None, self.TYPE_NAME)
 
@@ -132,24 +132,24 @@ class noneHelper(flatteningHelper):
         else:
             rval[self.TYPED_NONE_TYPE] = self.NULL
         return rval
-    
+
     def unflatten(self, obj):
         if obj is None or obj[self.TYPED_NONE_TYPE] == self.NULL:
             return None
-        
+
         rval = _wrapper.typednone()
         rval.typedNoneType = obj[self.TYPED_NONE_TYPE]
         return rval
-    
+
     def canflatten(self, obj):
         return obj is None or isinstance(obj, _wrapper.typednone)
-    
+
     def canunflatten(self, obj):
         return obj is None or super(noneHelper, self).canunflatten(obj)
-        
+
 class uuidHelper(flatteningHelper):
     TYPE_NAME = "java.util.UUID"
-    
+
     def __init__(self):
         super(uuidHelper, self).__init__(uuid.UUID, self.TYPE_NAME)
 
@@ -158,7 +158,7 @@ class uuidHelper(flatteningHelper):
         rval[TYPE] = self.TYPE_NAME
         rval[CONTENT] = str(thisUUID)
         return rval
-    
+
     def unflatten(self, obj):
         return uuid.UUID(obj[CONTENT])
 
@@ -168,10 +168,10 @@ class stackTraceElementHelper(object):
     METHODNAME = "methodName"
     FILENAME = "fileName"
     LINENUMBER = "lineNumber"
-    
+
     def canunflatten(self, obj):
         return isinstance(obj, dict) and obj.get(TYPE) == self.TYPE_NAME
-    
+
     def canflatten(self, obj):
         # There is no actual type in Python that is a StackTraceElement
         # so we can't flatten it. We flatten it as a side effect of
@@ -182,7 +182,7 @@ class stackTraceElementHelper(object):
         # This method can take a tuple as returned by extract_tb and
         # convert it to a flattened form
         (filename, line_number, function_name, unused_text, clazz) = obj
-        
+
         rval = dict()
         rval[TYPE] = self.TYPE_NAME
 
@@ -190,9 +190,9 @@ class stackTraceElementHelper(object):
         rval[self.METHODNAME] = flatten(function_name)
         rval[self.FILENAME] = flatten(filename)
         rval[self.LINENUMBER] = flatten(line_number)
-        
+
         return rval
-    
+
     def unflatten(self, obj):
         clazz = unflatten(obj[self.DECLARINGCLASS])
         function_name = unflatten(obj[self.METHODNAME])
@@ -236,9 +236,9 @@ class exceptionHelper(flatteningHelper):
                 # explicitly flatten
                 steHelper = stackTraceElementHelper()
                 stes = [steHelper.flatten(f) for f in tb]
-                
+
                 texts = flatten([f[3] for f in tb])
-                 
+
                 return stes, texts
             if tb is not None and id(value) == id(thisException):
                 extract_tb = traceback.extract_tb(tb)
@@ -250,7 +250,7 @@ class exceptionHelper(flatteningHelper):
         finally:
             _etype = value = tb = None
         return rval
-    
+
     def unflatten(self, obj):
         # For Python we squish the entire traceback into the message
         # because we can't create a "fake" traceback like we do with
@@ -260,7 +260,7 @@ class exceptionHelper(flatteningHelper):
         # preserve the flattened form (i.e. flatten -> unflatten -> flatten ->
         # unflatten -> etc) does not lose information. In practice this
         # continued transforms is only done on tests and the actual message
-        # of the exception is not well preserved  
+        # of the exception is not well preserved
         exctype = unflatten(obj[self.EXECTYPESTR])
         excstr = unflatten(obj[self.EXECVALUESTR])
         if excstr is None:
@@ -279,10 +279,10 @@ class exceptionHelper(flatteningHelper):
             stackTrace = [s[0][:3] + (s[1],s[0][3]) for s in zip(stackTrace, texts)]
 
             # Set the stack order to oldest on top
-            # (Java and Python have opposite order for storing 
-            # stack traces, this returns to Python order) 
+            # (Java and Python have opposite order for storing
+            # stack traces, this returns to Python order)
             stackTrace.reverse()
-            
+
             excmsg = excheader
             analheader = "\n\nTraceback (from AnalysisRPC Remote Side, most recent call last):\n"
             if analheader not in excmsg:
@@ -295,7 +295,7 @@ class exceptionHelper(flatteningHelper):
             return e
         else:
             return Exception(excheader)
-    
+
 helpers = [noneHelper(),
            dictHelper(), passThroughHelper(), listAndTupleHelper(),
            uuidHelper(), exceptionHelper(), stackTraceElementHelper()]
@@ -308,7 +308,7 @@ def flatten(obj):
         if thisHelper.canflatten(obj):
             return thisHelper.flatten(obj)
     raise TypeError("Object " + repr(obj) + " cannot be flattened")
-        
+
 def unflatten(obj):
     for thisHelper in helpers:
         if thisHelper.canunflatten(obj):
@@ -320,14 +320,14 @@ def canflatten(obj):
         if thisHelper.canflatten(obj):
             return True
     return False
-        
+
 def canunflatten(obj):
     for thisHelper in helpers:
         if thisHelper.canunflatten(obj):
             return True
     return False
-        
 
-        
+
+
 
 
