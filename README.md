@@ -12,14 +12,8 @@ At the Science WG unconference workshop at EclipseCon France 2016, it was propos
 2. Open and set the target definition in org.eclipse.triquetrum.python.rpc.platform.
 3. You should not have any compilation errors.
 4. Go to Run Configurations... and select the "OSGi Framework" configuration
-5. Adapt the paths in the VM arguments entries to point to your workspace location, e.g. :
-  * org.foobar.python.scripts.system=C:\data\build-folders\python-rpc-clean\org.eclipse.triquetrum.python.service\scripts
-  * org.foobar.python.scripts.user=C:\data\build-folders\python-rpc-clean/org.eclipse.triquetrum.python.service.example/scripts
-6. If your projects are located in your workspace, you could use e.g. :
-  * org.foobar.python.scripts.system=${workspace_loc}/org.eclipse.triquetrum.python.service/scripts
-  * org.foobar.python.scripts.user=${workspace_loc}/org.eclipse.triquetrum.python.service.example/scripts
-7. Run the thing
-8. Try runscript helloworld input1=hi input2=bye
+5. Run the thing
+6. Try runscript helloworld input1=hi input2=bye
 
 You should get output similar to :
 ```

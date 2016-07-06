@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014-2016 Diamond Light Source Ltd., 
+ * Copyright (c) 2012-2016 Diamond Light Source Ltd., 
  *                         Kichwa Coders & iSencia Belgium NV.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -27,17 +27,16 @@ import org.apache.xmlrpc.serializer.DoubleSerializer;
  */
 public class AnalysisRpcTypeFactoryImpl extends TypeFactoryImpl {
 
-	public AnalysisRpcTypeFactoryImpl(XmlRpcController pController) {
-		super(pController);
-	}
+  public AnalysisRpcTypeFactoryImpl(XmlRpcController pController) {
+    super(pController);
+  }
 
-	@Override
-	public TypeParser getParser(XmlRpcStreamConfig pConfig, NamespaceContextImpl pContext, String pURI,
-			String pLocalName) {
-		if (DoubleSerializer.DOUBLE_TAG.equals(pLocalName)) {
-			return new AnalysisRpcDoubleParser();
-		}
-		return super.getParser(pConfig, pContext, pURI, pLocalName);
-	}
+  @Override
+  public TypeParser getParser(XmlRpcStreamConfig pConfig, NamespaceContextImpl pContext, String pURI, String pLocalName) {
+    if (DoubleSerializer.DOUBLE_TAG.equals(pLocalName)) {
+      return new AnalysisRpcDoubleParser();
+    }
+    return super.getParser(pConfig, pContext, pURI, pLocalName);
+  }
 
 }

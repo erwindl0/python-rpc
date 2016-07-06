@@ -8,4 +8,16 @@
 	</buildSpec>
 	<natures>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>README.md</name>
+			<type>1</type>
+			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/README.md</locationURI>
+		</link>
+		<link>
+			<name>triq_code_format_prefs.xml</name>
+			<type>1</type>
+			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/triq_code_format_prefs.xml</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>

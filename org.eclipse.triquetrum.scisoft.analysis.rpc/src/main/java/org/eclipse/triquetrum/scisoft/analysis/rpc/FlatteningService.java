@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014-2016 Diamond Light Source Ltd., 
+ * Copyright (c) 2012-2016 Diamond Light Source Ltd., 
  *                         Kichwa Coders & iSencia Belgium NV.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,15 +17,15 @@ import org.eclipse.triquetrum.scisoft.analysis.rpc.flattening.IRootFlattener;
 import org.eclipse.triquetrum.scisoft.analysis.rpc.flattening.RootFlattener;
 
 public class FlatteningService {
-	private static IRootFlattener instance = new RootFlattener();
+  private static IRootFlattener instance = new RootFlattener();
 
-	/**
-	 * Get Root Flattener used by Analysis RPC
-	 * 
-	 * @return instance
-	 */
-	public static IRootFlattener getFlattener() {
-		return instance;
-	}
+  /**
+   * Get Root Flattener used by Analysis RPC
+   * 
+   * @return instance
+   */
+  public static IRootFlattener getFlattener() {
+    return instance;
+  }
 
 }

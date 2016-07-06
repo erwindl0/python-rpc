@@ -20,7 +20,7 @@ public class PythonUtils {
   public static String formatPythonStackInfo(AnalysisRpcException e) {
     StringBuilder bldr = new StringBuilder("<br/><div style=\"margin-left: 20px; color:RED\">");
     bldr.append(((AnalysisRpcRemoteException) e.getCause()).getPythonFormattedStackTrace(null).replace("\n", "<br/>"));
-//    bldr.append(((AnalysisRpcRemoteException) e.getCause()).getPythonFormattedStackTrace("python_service_runscript.py").replace("\n", "<br/>"));
+    // bldr.append(((AnalysisRpcRemoteException) e.getCause()).getPythonFormattedStackTrace("python_service_runscript.py").replace("\n", "<br/>"));
     bldr.append("</div><br/>");
     return bldr.toString();
   }

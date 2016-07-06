@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2016  Diamond Light Source Ltd., 
+ * Copyright (c) 2013, 2016  Diamond Light Source Ltd.,
  *                          Kichwa Coders & iSencia Belgium NV.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,29 +13,31 @@
 package org.eclipse.triquetrum.python.service;
 
 import java.io.File;
+import java.io.IOException;
+import java.lang.ProcessBuilder.Redirect;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.triquetrum.python.service.util.NetUtils;
-import org.eclipse.triquetrum.python.service.util.cmdline.ManagedCommandline;
 import org.eclipse.triquetrum.scisoft.analysis.rpc.AnalysisRpcClient;
 import org.eclipse.triquetrum.scisoft.analysis.rpc.AnalysisRpcRemoteException;
 
 /**
- * This class encapsulates a system command to python used with the RPC service.
- * Minimized version of the org.dawnsci.python.rpc.PythonService.
+ * This class encapsulates a system command to python used with the RPC service. Minimized version of the org.dawnsci.python.rpc.PythonService.
  */
 public class PythonService {
+  public static final String PLUGIN_ID = "org.eclipse.triquetrum.python.service";
+  public static final String PYTHON_DEBUG_PORT_PROP_NAME = PLUGIN_ID + ".debug.port";
+  public final static String PYTHON_FREE_PORT_PROP_NAME = PLUGIN_ID + ".free.port";
+  public final static String PYTHON_RPC_SERVICE_TIMEOUT_PROP_NAME = PLUGIN_ID + ".timeout";
 
-  public static final String PYTHON_DEBUG_PORT_PROP_NAME = "org.foobar.python.debug.port";
-  public final static String PYTHON_FREE_PORT_PROP_NAME = "org.foobar.python.free.port";
-  public final static String PYTHON_RPC_SERVICE_TIMEOUT_PROP_NAME = "org.foobar.python.timeout";
-  public final static String SYSTEM_SCRIPTS_HOME = System.getProperty("org.foobar.python.scripts.system");
-
-  private ManagedCommandline command;
+  private Process process;
   private AnalysisRpcClient client;
   private Thread stopThread;
 
@@ -59,30 +61,27 @@ public class PythonService {
 
     final PythonService service = new PythonService();
 
-    // Find the location of python_service.py and
-    // ensure org.eclipse.triquetrum.scisoft.python in PYTHONPATH
-    final Map<String, String> env = new HashMap<String, String>(System.getenv());
-    String pythonPath = env.get("PYTHONPATH");
+    final int port = NetUtils.getFreePort(getServiceStartPort());
+    String script = getSystemScriptsHome() + "/python_service_runscript.py";
 
-    StringBuilder pyBuf;
-    if (pythonPath == null) {
-      pyBuf = new StringBuilder();
-    } else {
-      pyBuf = new StringBuilder(pythonPath);
+    ProcessBuilder processBuilder = new ProcessBuilder(pythonInterpreter, "-u", script, String.valueOf(port), "-1");
+
+    Map<String, String> environment = processBuilder.environment();
+    String pythonPath = environment.get("PYTHONPATH");
+    StringBuilder pyBuf = new StringBuilder();
+    if (pythonPath != null) {
+      pyBuf.append(pythonPath);
       pyBuf.append(File.pathSeparatorChar);
     }
-    final int port = NetUtils.getFreePort(getServiceStartPort());
-    String script = SYSTEM_SCRIPTS_HOME + "/python_service_runscript.py";
+    pyBuf.append(getSystemScriptsHome());
 
-    service.command = new ManagedCommandline();
-    service.command.addArguments(new String[] { pythonInterpreter, "-u", script, String.valueOf(port), "-1" });
+    environment.put("PYTHONPATH", pyBuf.toString());
 
-    env.put("PYTHONPATH", pyBuf.append(SYSTEM_SCRIPTS_HOME).toString());
-    service.command.setEnv(env);
-
-    // Currently log back python output directly to the log file.
-    service.command.setStreamLogsToLogging(true);
-    service.command.execute();
+    // TODO: log back python output directly to the log file.
+    processBuilder.redirectInput(Redirect.INHERIT);
+    processBuilder.redirectOutput(Redirect.INHERIT);
+    processBuilder.redirectError(Redirect.INHERIT);
+    service.process = processBuilder.start();
 
     service.stopThread = new Thread("Stop Python Service") {
       public void run() {
@@ -182,8 +181,8 @@ public class PythonService {
       throw new Exception("The remote python process did not start!");
 
     int count = 0;
-    final int time = System.getProperty(PYTHON_RPC_SERVICE_TIMEOUT_PROP_NAME) != null ? Integer.parseInt(System
-        .getProperty(PYTHON_RPC_SERVICE_TIMEOUT_PROP_NAME)) : 5000;
+    final int time = System.getProperty(PYTHON_RPC_SERVICE_TIMEOUT_PROP_NAME) != null
+        ? Integer.parseInt(System.getProperty(PYTHON_RPC_SERVICE_TIMEOUT_PROP_NAME)) : 5000;
 
     while (count <= time) {
       try {
@@ -203,25 +202,14 @@ public class PythonService {
     throw new Exception("RPC connect to python timed out after " + time + "ms! Are you sure the python server is going?");
   }
 
-  /**
-   * Will be null when openClient(port) is used.
-   *
-   * @return
-   */
-  public ManagedCommandline getCommand() {
-    return command;
-  }
-
   public AnalysisRpcClient getClient() {
     return client;
   }
 
   public void stop() {
-    if (command == null)
+    if (process == null)
       return;
-    if (command.getProcess() == null)
-      return;
-    command.getProcess().destroy();
+    process.destroy();
     if (stopThread != null) {
       try {
         Runtime.getRuntime().removeShutdownHook(stopThread);
@@ -235,9 +223,9 @@ public class PythonService {
   }
 
   public boolean isRunning() {
-    if (command == null)
+    if (process == null)
       return true; // Probably in debug mode
-    return !command.hasTerminated();
+    return process.isAlive();
   }
 
   /**
@@ -252,7 +240,6 @@ public class PythonService {
   public Map<String, ? extends Object> runScript(String scriptFullPath, Map<String, ?> data) throws Exception {
 
     final File dir = getWorkingDir(scriptFullPath);
-    command.setWorkingDir(dir);
     final List<String> additionalPaths = new ArrayList<String>(1);
     additionalPaths.add(new File(scriptFullPath).getParent().toString());
     if (System.getenv("PYTHONPATH") != null) {
@@ -301,6 +288,16 @@ public class PythonService {
    */
   public String formatException(AnalysisRpcRemoteException e) {
     return e.getPythonFormattedStackTrace("python_service.py");
+  }
+
+  private static String getSystemScriptsHome() throws IOException, URISyntaxException {
+    URL url = new URL("platform:/plugin/" + PLUGIN_ID + "/scripts");
+    URL fileURL = FileLocator.toFileURL(url);
+    File systemScriptsHome = new File(URIUtil.toURI(fileURL));
+    if (!systemScriptsHome.exists()) {
+      throw new IOException("Failed to find " + PLUGIN_ID + "/scripts, expected it here: " + systemScriptsHome);
+    }
+    return systemScriptsHome.toString();
   }
 
 }

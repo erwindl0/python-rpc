@@ -1,33 +1,25 @@
 ###
-# Copyright 2011 Diamond Light Source Ltd.
-# 
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-# 
-#   http://www.apache.org/licenses/LICENSE-2.0
-# 
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Copyright (c) 2011, 2016  Diamond Light Source Ltd.,
+#                          Kichwa Coders & iSencia Belgium NV.
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Eclipse Public License v1.0
+# which accompanies this distribution, and is available at
+# http://www.eclipse.org/legal/epl-v10.html
+#
+# Contributors:
+#    DLS, Kichwa Coders - initial API and implementation and/or initial documentation
+#    Erwin De Ley - extraction from DAWN to ease reuse in other contexts
 ###
 
-''' 
+
+'''
 Python version of flattening. See Java version for documentation on flattening.
 This module is generally for internal use by AnalysisRPC and is only made
 public for the purpose of testing, see pyflatten_test.py
 '''
 
-import scisoftpy.python.pyroi as _roi
-import scisoftpy.python.pybeans as _beans
 import scisoftpy.python.pywrapper as _wrapper
-import numpy as _np #@UnresolvedImport
-from tempfile import mkstemp
-import os
 import sys
-import copy
 import uuid
 import traceback
 
@@ -41,10 +33,10 @@ def settemplocation(loc=None):
     '''
      Set a custom temporary file location. This is used by some flatteners to store large data sets which are faster
      to write to disk than send over XML-RPC.
-     
+
      There is no requirement for the unflattener at the other end to have the same temp location as a full path to the
      temp file should be stored in the flattened form.
-     
+
      loc new temp file location to use, or None to use default of system temp
     '''
     global _TEMP_LOCATION, _TEMP_LOCATION_SET
@@ -58,109 +50,18 @@ class flatteningHelper(object):
 
     def canunflatten(self, obj):
         return isinstance(obj, dict) and obj.get(TYPE) == self.typeName
-    
+
     def canflatten(self, obj):
         return isinstance(obj, self.typeObj)
 
-class roiHelper(flatteningHelper):
-
-    def __init__(self, typeObj, typeName):
-        super(roiHelper, self).__init__(typeObj, typeName)
-        
-    def flatten(self, thisRoiBase):
-        d = copy.deepcopy(thisRoiBase.__dict__)
-        rval = dict()
-        for k, v in d.iteritems():
-            rval[k] = flatten(v)
-        rval[TYPE] = self.typeName
-        return rval
-    
-    def unflatten(self, obj):
-        unflattenedObj = dict()
-        for k, v in obj.iteritems():
-            if k == TYPE:
-                continue
-            v = unflatten(v)
-            unflattenedObj[k] = v
-        return self.typeObj(**unflattenedObj)
-
-    @staticmethod
-    def getROIBaseHelper():
-        return roiHelper(_roi.roibase, "org.eclipse.triquetrum.scisoft.analysis.roi.ROIBase")
-        
-    @staticmethod
-    def getPointHelper():
-        return roiHelper(_roi.point, "org.eclipse.triquetrum.scisoft.analysis.roi.PointROI")
-        
-    @staticmethod
-    def getRectangleHelper():
-        return roiHelper(_roi.rectangle, "org.eclipse.triquetrum.scisoft.analysis.roi.RectangularROI")
-        
-    @staticmethod
-    def getSectorHelper():
-        return roiHelper(_roi.sector, "org.eclipse.triquetrum.scisoft.analysis.roi.SectorROI")
-
-    @staticmethod
-    def getLineHelper():
-        return roiHelper(_roi.line, "org.eclipse.triquetrum.scisoft.analysis.roi.LinearROI")
-
-    @staticmethod
-    def getCircleHelper():
-        return roiHelper(_roi.circle, "org.eclipse.triquetrum.scisoft.analysis.roi.CircularROI")
-
-    @staticmethod
-    def getEllipseHelper():
-        return roiHelper(_roi.ellipse, "org.eclipse.triquetrum.scisoft.analysis.roi.EllipticalROI")
-
-
-class axisMapBeanHelper(flatteningHelper):
-
-    TYPE_NAME = "org.eclipse.triquetrum.scisoft.analysis.plotserver.AxisMapBean"
-    
-    def __init__(self):
-        super(axisMapBeanHelper, self).__init__(_beans.axismapbean, self.TYPE_NAME)
-    
-    def flatten(self, thisAxisMapBean):
-        rval = dict()
-        rval[TYPE] = self.TYPE_NAME
-        rval[_beans.axismapbean._AXIS_ID] = thisAxisMapBean.axisID
-        rval[_beans.axismapbean._AXIS_NAMES] = thisAxisMapBean.axisNames
-        return rval
-    
-    def unflatten(self, obj):
-        unflattenedMap = dict()
-        unflattenedMap[_beans.axismapbean._AXIS_ID] = unflatten(obj[_beans.axismapbean._AXIS_ID])
-        unflattenedMap[_beans.axismapbean._AXIS_NAMES] = unflatten(obj[_beans.axismapbean._AXIS_NAMES])
-        return _beans.axismapbean(**unflattenedMap)
-        
-class datasetWithAxisInformationHelper(flatteningHelper):
-
-    TYPE_NAME = "org.eclipse.triquetrum.scisoft.analysis.plotserver.DataSetWithAxisInformation"
-    
-    def __init__(self):
-        super(datasetWithAxisInformationHelper, self).__init__(_beans.datasetwithaxisinformation, self.TYPE_NAME)
-        
-    def flatten(self, thisDatasetWithAxisInformation):
-        rval = dict()
-        rval[TYPE] = self.TYPE_NAME
-        rval[_beans.datasetwithaxisinformation._DATA] = flatten(thisDatasetWithAxisInformation.data)
-        rval[_beans.datasetwithaxisinformation._AXIS_MAP] = flatten(thisDatasetWithAxisInformation.axisMap)
-        return rval
-    
-    def unflatten(self, obj):
-        unflattenedMap = dict()
-        unflattenedMap[_beans.datasetwithaxisinformation._DATA] = unflatten(obj[_beans.datasetwithaxisinformation._DATA])
-        unflattenedMap[_beans.datasetwithaxisinformation._AXIS_MAP] = unflatten(obj[_beans.datasetwithaxisinformation._AXIS_MAP])        
-        return _beans.datasetwithaxisinformation(**unflattenedMap)
-            
 class dictHelper(flatteningHelper):
     TYPE_NAME = "java.util.Map"
     KEYS = "keys"
     VALUES = "values"
-    
+
     def __init__(self):
         super(dictHelper, self).__init__(dict, self.TYPE_NAME)
-        
+
     def flatten(self, thisDict):
         rval = dict()
         rval[TYPE] = self.TYPE_NAME
@@ -177,191 +78,21 @@ class dictHelper(flatteningHelper):
             rval[unflatten(k)] = unflatten(v)
         return rval
 
+passThroughTypes = (str, int, float, _wrapper.binarywrapper)
+if sys.hexversion < 0x03000000:
+    passThroughTypes = passThroughTypes + (unicode, long)
 class passThroughHelper(object):
     def flatten(self, obj):
         return obj
-    
+
     def unflatten(self, obj):
         return obj
 
     def canflatten(self, obj):
-        return isinstance(obj, (str, int, long, float, _wrapper.binarywrapper))
+        return isinstance(obj, passThroughTypes)
 
     def canunflatten(self, obj):
         return self.canflatten(obj)
-
-class unicodeHelper(object):
-    def flatten(self, obj):
-        return str(obj)
-    
-    def unflatten(self, obj):
-        raise NotImplementedError()
-
-    def canflatten(self, obj):
-        return isinstance(obj, unicode)
-
-    def canunflatten(self, obj):
-        return False
-
-class ndArrayHelper(flatteningHelper):
-    TYPE_NAME = "org.eclipse.triquetrum.scisoft.analysis.dataset.AbstractDataset"
-    FILENAME = "filename"
-    DELETEFILEAFTERLOAD = "deletefile"
-    INDEX = "index"
-    NAME = "name"
-    
-    def __init__(self):
-        super(ndArrayHelper, self).__init__(_np.ndarray, self.TYPE_NAME)
-    
-    def flatten(self, obj):
-        rval = dict()
-        if isinstance(obj, _np.ndarray):
-            global _TEMP_LOCATION, _TEMP_LOCATION_SET
-            if not _TEMP_LOCATION_SET:
-                _TEMP_LOCATION = os.getenv('SCISOFT_RPC_TEMP')
-                _TEMP_LOCATION_SET = True
-            if _TEMP_LOCATION == "":
-                _TEMP_LOCATION = None
-                 
-            (osfd, filename) = mkstemp(suffix='.npy', prefix='scisofttmp-', dir=_TEMP_LOCATION)
-            os.close(osfd)
-            try:
-                _np.save(filename, _np.asarray(obj, order='C')) # convert to C order as Java loader cannot cope otherwise
-            except:
-                # If we failed to write the file, remove it
-                # mkstemp returned a new file that did not exist, so 
-                # we can't be removing someone else's file
-                os.remove(filename)
-                raise
-            rval[self.FILENAME] = filename
-            rval[self.DELETEFILEAFTERLOAD] = True
-        elif isinstance(obj, _wrapper.abstractdatasetdescriptor):
-            rval[self.FILENAME] = obj.filename
-            if obj.deleteAfterLoad:
-                rval[self.DELETEFILEAFTERLOAD] = True
-            if obj.index is not None:
-                rval[self.INDEX] = obj.index
-            if obj.name is not None:
-                rval[self.NAME] = obj.name
-
-        rval[TYPE] = self.TYPE_NAME
-        return rval
-
-    def unflatten(self, obj):
-        filename = obj[self.FILENAME]
-        deletefile = False
-        if self.DELETEFILEAFTERLOAD in obj:
-            deletefile = obj[self.DELETEFILEAFTERLOAD]
-        try:
-            return _np.load(filename)
-        finally:
-            if deletefile:
-                os.remove(filename)
-                
-    def canflatten(self, obj):
-        return isinstance(obj, (_np.ndarray, _wrapper.abstractdatasetdescriptor))
-
-class guiBeanHelper(flatteningHelper):
-    TYPE_NAME = "org.eclipse.triquetrum.scisoft.analysis.plotserver.GuiBean"
-    
-    def __init__(self):
-        super(guiBeanHelper, self).__init__(_beans.guibean, self.TYPE_NAME)
-    
-    def flatten(self, obj):
-        rval = dict()
-        for k, v in obj.iteritems():
-            rval[str(k)] = flatten(v)
-            
-        rval[TYPE] = self.TYPE_NAME
-        return rval
-
-    def unflatten(self, thisDict):
-        rval = _beans.guibean()
-        for k, v in thisDict.iteritems():
-            if k == TYPE:
-                continue
-            guiparam = _beans.parameters.get(k)
-            val = unflatten(v)
-            if guiparam == _beans.parameters.plotid and not isinstance(val, uuid.UUID):
-                val = uuid.UUID(val)
-            elif guiparam == _beans.parameters.plotmode and not isinstance(val, _beans.plotmode._plotmodehelper):
-                val = _beans.plotmode.get(val)
-            rval[guiparam] = val
-        return rval
-
-class guiParametersHelper(flatteningHelper):
-    TYPE_NAME = "org.eclipse.triquetrum.scisoft.analysis.plotserver.GuiParameters"
-
-    def __init__(self):
-        super(guiParametersHelper, self).__init__(_beans._parameters._parametershelper, self.TYPE_NAME)
-    
-    def flatten(self, obj):
-        rval = dict()
-        rval[TYPE] = self.TYPE_NAME
-        rval[CONTENT] = str(obj)
-        return rval
-
-    def unflatten(self, thisDict):
-        return _beans.parameters.get(thisDict[CONTENT])
-
-class plotModeHelper(flatteningHelper):
-    TYPE_NAME = "org.eclipse.triquetrum.scisoft.analysis.plotserver.GuiPlotMode"
-
-    def __init__(self):
-        super(plotModeHelper, self).__init__(_beans._plotmode._plotmodehelper, self.TYPE_NAME)
-    
-    def flatten(self, obj):
-        rval = dict()
-        rval[TYPE] = self.TYPE_NAME
-        rval[CONTENT] = str(obj)
-        return rval
-
-    def unflatten(self, thisDict):
-        return _beans.plotmode.get(thisDict[CONTENT])
-
-class roiListHelper(flatteningHelper):
-    
-    def __init__(self, typeObj, typeName):
-        super(roiListHelper, self).__init__(typeObj, typeName)
-        
-    def flatten(self, thisList):
-        flatList = []
-        for thisRoi in thisList:
-            flatList.append(flatten(thisRoi))
-        rval = dict()
-        rval[TYPE] = self.typeName
-        rval[CONTENT] = flatList
-        return rval
-    
-    def unflatten(self, obj):
-        rval = self.typeObj()
-        for thisRoi in obj[CONTENT]:
-            rval.append(unflatten(thisRoi))
-        return rval
-
-    @staticmethod
-    def getPointListHelper():
-        return roiListHelper(_roi.point_list, "org.eclipse.triquetrum.scisoft.analysis.roi.PointROIList")
-
-    @staticmethod
-    def getLineListHelper():
-        return roiListHelper(_roi.line_list, "org.eclipse.triquetrum.scisoft.analysis.roi.LinearROIList")
-
-    @staticmethod
-    def getRectangleListHelper():
-        return roiListHelper(_roi.rectangle_list, "org.eclipse.triquetrum.scisoft.analysis.roi.RectangularROIList")
-
-    @staticmethod
-    def getSectorListHelper():
-        return roiListHelper(_roi.sector_list, "org.eclipse.triquetrum.scisoft.analysis.roi.SectorROIList")
-
-    @staticmethod
-    def getCircleListHelper():
-        return roiListHelper(_roi.circle_list, "org.eclipse.triquetrum.scisoft.analysis.roi.CircularROIList")
-
-    @staticmethod
-    def getEllipseListHelper():
-        return roiListHelper(_roi.ellipse_list, "org.eclipse.triquetrum.scisoft.analysis.roi.EllipticalROIList")
 
 class listAndTupleHelper(object):
     def flatten(self, obj):
@@ -369,44 +100,25 @@ class listAndTupleHelper(object):
         for thisItem in obj:
             outList.append(flatten(thisItem))
         return outList
-    
+
     def unflatten(self, obj):
         outList = []
         for thisItem in obj:
             outList.append(unflatten(thisItem))
         return outList
-        
-    
+
+
     def canflatten(self, obj):
         return isinstance(obj, (list, tuple))
 
     def canunflatten(self, obj):
         return isinstance(obj, (list, tuple))
 
-class dataBeanHelper(flatteningHelper):
-    TYPE_NAME = "org.eclipse.triquetrum.scisoft.analysis.plotserver.DataBean"
-    
-    def __init__(self):
-        super(dataBeanHelper, self).__init__(_beans.databean, self.TYPE_NAME)
-
-    def flatten(self, thisDataBean):
-        rval = dict()
-        rval[TYPE] = self.TYPE_NAME
-        rval[_beans.databean._AXIS_DATA] = flatten(thisDataBean.axisData)
-        rval[_beans.databean._DATA] = flatten(thisDataBean.data)
-        return rval
-    
-    def unflatten(self, obj):
-        unflattenedMap = dict()
-        unflattenedMap[_beans.databean._AXIS_DATA] = unflatten(obj[_beans.databean._AXIS_DATA])
-        unflattenedMap[_beans.databean._DATA] = unflatten(obj[_beans.databean._DATA])
-        return _beans.databean(**unflattenedMap)
-
 class noneHelper(flatteningHelper):
     TYPE_NAME = "__None__"
     TYPED_NONE_TYPE = "typedNoneType"
     NULL = "null"
-    
+
     def __init__(self):
         super(noneHelper, self).__init__(None, self.TYPE_NAME)
 
@@ -418,24 +130,24 @@ class noneHelper(flatteningHelper):
         else:
             rval[self.TYPED_NONE_TYPE] = self.NULL
         return rval
-    
+
     def unflatten(self, obj):
         if obj is None or obj[self.TYPED_NONE_TYPE] == self.NULL:
             return None
-        
+
         rval = _wrapper.typednone()
         rval.typedNoneType = obj[self.TYPED_NONE_TYPE]
         return rval
-    
+
     def canflatten(self, obj):
         return obj is None or isinstance(obj, _wrapper.typednone)
-    
+
     def canunflatten(self, obj):
         return obj is None or super(noneHelper, self).canunflatten(obj)
-        
+
 class uuidHelper(flatteningHelper):
     TYPE_NAME = "java.util.UUID"
-    
+
     def __init__(self):
         super(uuidHelper, self).__init__(uuid.UUID, self.TYPE_NAME)
 
@@ -444,7 +156,7 @@ class uuidHelper(flatteningHelper):
         rval[TYPE] = self.TYPE_NAME
         rval[CONTENT] = str(thisUUID)
         return rval
-    
+
     def unflatten(self, obj):
         return uuid.UUID(obj[CONTENT])
 
@@ -454,10 +166,10 @@ class stackTraceElementHelper(object):
     METHODNAME = "methodName"
     FILENAME = "fileName"
     LINENUMBER = "lineNumber"
-    
+
     def canunflatten(self, obj):
         return isinstance(obj, dict) and obj.get(TYPE) == self.TYPE_NAME
-    
+
     def canflatten(self, obj):
         # There is no actual type in Python that is a StackTraceElement
         # so we can't flatten it. We flatten it as a side effect of
@@ -468,7 +180,7 @@ class stackTraceElementHelper(object):
         # This method can take a tuple as returned by extract_tb and
         # convert it to a flattened form
         (filename, line_number, function_name, unused_text, clazz) = obj
-        
+
         rval = dict()
         rval[TYPE] = self.TYPE_NAME
 
@@ -476,9 +188,9 @@ class stackTraceElementHelper(object):
         rval[self.METHODNAME] = flatten(function_name)
         rval[self.FILENAME] = flatten(filename)
         rval[self.LINENUMBER] = flatten(line_number)
-        
+
         return rval
-    
+
     def unflatten(self, obj):
         clazz = unflatten(obj[self.DECLARINGCLASS])
         function_name = unflatten(obj[self.METHODNAME])
@@ -513,18 +225,18 @@ class exceptionHelper(flatteningHelper):
             # being flattened is the exception
             def flatten_tb(tb):
                 # Set the stack order to newest on top
-                # (Java and Python have opposite order for storing 
-                # stack traces, this normalizes them) 
+                # (Java and Python have opposite order for storing
+                # stack traces, this normalizes them)
                 tb.reverse()
-                
+
                 # Ideally we would do "rval[self.TRACEBACK] = flatten(tb)" but
-                # there is no type info to do that, so instead we have to 
+                # there is no type info to do that, so instead we have to
                 # explicitly flatten
                 steHelper = stackTraceElementHelper()
                 stes = [steHelper.flatten(f) for f in tb]
-                
+
                 texts = flatten([f[3] for f in tb])
-                 
+
                 return stes, texts
             if tb is not None and id(value) == id(thisException):
                 extract_tb = traceback.extract_tb(tb)
@@ -536,7 +248,7 @@ class exceptionHelper(flatteningHelper):
         finally:
             _etype = value = tb = None
         return rval
-    
+
     def unflatten(self, obj):
         # For Python we squish the entire traceback into the message
         # because we can't create a "fake" traceback like we do with
@@ -546,7 +258,7 @@ class exceptionHelper(flatteningHelper):
         # preserve the flattened form (i.e. flatten -> unflatten -> flatten ->
         # unflatten -> etc) does not lose information. In practice this
         # continued transforms is only done on tests and the actual message
-        # of the exception is not well preserved  
+        # of the exception is not well preserved
         exctype = unflatten(obj[self.EXECTYPESTR])
         excstr = unflatten(obj[self.EXECVALUESTR])
         if excstr is None:
@@ -565,10 +277,10 @@ class exceptionHelper(flatteningHelper):
             stackTrace = [s[0][:3] + (s[1],s[0][3]) for s in zip(stackTrace, texts)]
 
             # Set the stack order to oldest on top
-            # (Java and Python have opposite order for storing 
-            # stack traces, this returns to Python order) 
+            # (Java and Python have opposite order for storing
+            # stack traces, this returns to Python order)
             stackTrace.reverse()
-            
+
             excmsg = excheader
             analheader = "\n\nTraceback (from AnalysisRPC Remote Side, most recent call last):\n"
             if analheader not in excmsg:
@@ -581,18 +293,10 @@ class exceptionHelper(flatteningHelper):
             return e
         else:
             return Exception(excheader)
-    
-helpers = [noneHelper(), roiListHelper.getLineListHelper(), roiListHelper.getPointListHelper(),
-           roiListHelper.getSectorListHelper(), roiListHelper.getRectangleListHelper(),
-           roiListHelper.getCircleListHelper(), roiListHelper.getEllipseListHelper(),
-           roiHelper.getRectangleHelper(), roiHelper.getSectorHelper(),
-           roiHelper.getCircleHelper(), roiHelper.getEllipseHelper(),
-           roiHelper.getLineHelper(), roiHelper.getPointHelper(), roiHelper.getROIBaseHelper(), 
-           ndArrayHelper(), guiBeanHelper(),
-           guiParametersHelper(), plotModeHelper(), axisMapBeanHelper(),
-           datasetWithAxisInformationHelper(), dataBeanHelper(),
+
+helpers = [noneHelper(),
            dictHelper(), passThroughHelper(), listAndTupleHelper(),
-           uuidHelper(), exceptionHelper(), stackTraceElementHelper(), unicodeHelper()]
+           uuidHelper(), exceptionHelper(), stackTraceElementHelper()]
 
 def addhelper(helper):
     helpers.insert(0, helper)
@@ -602,7 +306,7 @@ def flatten(obj):
         if thisHelper.canflatten(obj):
             return thisHelper.flatten(obj)
     raise TypeError("Object " + repr(obj) + " cannot be flattened")
-        
+
 def unflatten(obj):
     for thisHelper in helpers:
         if thisHelper.canunflatten(obj):
@@ -614,14 +318,14 @@ def canflatten(obj):
         if thisHelper.canflatten(obj):
             return True
     return False
-        
+
 def canunflatten(obj):
     for thisHelper in helpers:
         if thisHelper.canunflatten(obj):
             return True
     return False
-        
 
-        
+
+
 
 

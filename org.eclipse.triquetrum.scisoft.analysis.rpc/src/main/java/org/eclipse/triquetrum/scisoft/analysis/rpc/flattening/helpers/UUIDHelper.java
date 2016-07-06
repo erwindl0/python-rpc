@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014-2016 Diamond Light Source Ltd., 
+ * Copyright (c) 2012-2016 Diamond Light Source Ltd., 
  *                         Kichwa Coders & iSencia Belgium NV.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -20,13 +20,13 @@ import org.eclipse.triquetrum.scisoft.analysis.rpc.flattening.IRootFlattener;
 
 public class UUIDHelper extends SortOfEnumHelper<UUID> {
 
-	public UUIDHelper() {
-		super(UUID.class);
-	}
+  public UUIDHelper() {
+    super(UUID.class);
+  }
 
-	@Override
-	public UUID unflatten(Map<?, ?> inMap, IRootFlattener rootFlattener) {
-		return UUID.fromString(inMap.get(CONTENT).toString());
-	}
+  @Override
+  public UUID unflatten(Map<?, ?> inMap, IRootFlattener rootFlattener) {
+    return UUID.fromString(inMap.get(CONTENT).toString());
+  }
 
 }
