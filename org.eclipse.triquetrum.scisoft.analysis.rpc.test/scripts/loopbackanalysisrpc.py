@@ -1,6 +1,6 @@
 ###
-# Copyright (c) 2012-2016 Diamond Light Source Ltd.,
-#                         Kichwa Coders & iSencia Belgium NV.
+# Copyright (c) 2011, 2016  Diamond Light Source Ltd.,
+#                          Kichwa Coders & iSencia Belgium NV.
 # All rights reserved. This program and the accompanying materials
 # are made available under the terms of the Eclipse Public License v1.0
 # which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
 #    DLS, Kichwa Coders - initial API and implementation and/or initial documentation
 #    Erwin De Ley - extraction from DAWN to ease reuse in other contexts
 ###
+
 
 import os, sys
 sys.path.append(sys.argv[1])
